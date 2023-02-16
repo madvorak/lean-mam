@@ -108,7 +108,7 @@ def je_dokonale_cislo (a : Nat) : Bool := false -- TODO
 
 
 def vypis_splnujici_do (podminka : Nat → Bool) (n : Nat) :=
-List.filter (fun x => podminka x) (List.range (n + 1))
+List.filter podminka (List.range (n + 1))
 
 def seznam_prvocisel_do (n : Nat) :=
 vypis_splnujici_do je_prvocislo n
