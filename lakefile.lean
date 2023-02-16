@@ -2,7 +2,6 @@ import Lake
 open Lake DSL
 
 package «lean-mam» {
-  -- add package configuration options here
 }
 
 @[default_target]
