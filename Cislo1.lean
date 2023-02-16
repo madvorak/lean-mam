@@ -1,4 +1,4 @@
--- import data.nat.sqrt
+import Std.Data.Nat.Basic
 
 
 def obvod_obdelnika (a b : Nat) : Nat := 2 * (a + b)
@@ -17,6 +17,19 @@ else "liche"
 #eval parita 0
 #eval parita (99999999999 * 2 * 77777777777777777 + 1)
 #eval parita (2 - 3)
+
+
+def je_ctverec (a : Nat) : Bool := (Nat.sqrt a) ^ 2 = a
+
+#eval je_ctverec 15
+#eval je_ctverec 16
+#eval je_ctverec 17
+#eval je_ctverec 0
+#eval je_ctverec 1
+#eval je_ctverec 2
+#eval je_ctverec 3
+#eval je_ctverec 4
+#eval je_ctverec 5
 
 
 def dvojice_rostouci (x y : Int) : List Int :=

@@ -9,6 +9,20 @@ def povrch_kvadru (a b c : Nat) : Nat := 0 -- TODO
 #eval povrch_kvadru 999 1000 1001   /- `5999998` -/
 
 
+def je_ctvrta_mocnina (a : Nat) : Bool := false -- TODO
+
+#eval je_ctvrta_mocnina 15
+#eval je_ctvrta_mocnina 16
+#eval je_ctvrta_mocnina 17
+#eval je_ctvrta_mocnina 0
+#eval je_ctvrta_mocnina 1
+#eval je_ctvrta_mocnina 2
+#eval je_ctvrta_mocnina 3
+#eval je_ctvrta_mocnina 4
+#eval je_ctvrta_mocnina 5
+#eval List.filter je_ctvrta_mocnina (List.range 5000) /- `[0, 1, 16, 81, 256, 625, 1296, 2401, 4096]` -/
+
+
 def reseni_kvadraticke_rovnice (a b c : Float) : List Float := [] -- TODO
 
 /- `x^2 = 2` -/
@@ -99,9 +113,11 @@ List.filter (fun x => podminka x) (List.range (n + 1))
 def seznam_prvocisel_do (n : Nat) :=
 vypis_splnujici_do je_prvocislo n
 
+#eval seznam_prvocisel_do 40
+#eval seznam_prvocisel_do 100
+
 def seznam_dokonalych_cisel_do (n : Nat) :=
 vypis_splnujici_do je_dokonale_cislo n
 
-#eval seznam_prvocisel_do 40
-
 #eval seznam_dokonalych_cisel_do 500
+#eval seznam_dokonalych_cisel_do 10000
