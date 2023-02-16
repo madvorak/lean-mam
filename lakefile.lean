@@ -5,11 +5,10 @@ package «lean-mam» {
   -- add package configuration options here
 }
 
-lean_lib «LeanMam» {
-  -- add library configuration options here
-}
-
 @[default_target]
 lean_exe «lean-mam» {
   root := `Main
 }
+
+lean_lib Cislo1
+lean_lib Cislo2

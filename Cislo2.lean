@@ -1,4 +1,3 @@
--- import data.pi
 
 
 def seznam123_a : List Nat := [1, 2, 3]
@@ -16,14 +15,6 @@ def seznam123_e : List Nat := 1 :: 2 :: 3 :: []
 def rovnaji_se : Bool :=
 seznam123_a = seznam123_b ∧ seznam123_b = seznam123_c ∧ seznam123_c = seznam123_d ∧ seznam123_d = seznam123_e
 #eval rovnaji_se
-
-
-def soucet : List Int → Int
-|        []       => 0
-| (hlava :: ocas) => hlava + soucet ocas
-
-#eval soucet [5, -4, -3, 1]
-#eval soucet (List.map (fun (z : Nat) => z) seznam123_a)
 
 
 def seznam12345_a : List Nat := [1, 2, 3, 4, 5]
@@ -44,9 +35,30 @@ def nerovnaji_se : Bool := seznam123_a = seznam12345_a
 #eval nerovnaji_se
 
 
-def obrat : List Nat → List Nat
+def soucet : List Int → Int
+|        []       => 0
+| (hlava :: telo) => hlava + soucet telo
+
+#eval soucet [5, -4, -3, 1]
+#eval soucet (List.map (fun (z : Nat) => z) seznam123_a)
+#eval soucet (List.map (fun (z : Nat) => z) seznam12345_a)
+
+
+def delka {α : Type} : List α → Nat
+|    []       => 0
+| (_ :: telo) => 1 + delka telo
+
+#eval delka seznam123_a
+#eval delka seznam12345_a
+#eval delka ['a']
+#eval delka ([] : List Float)
+#eval delka (List.range 42)
+#eval delka (0 :: seznam123_a ++ seznam12345_a)
+
+
+def obrat {α : Type} : List α → List α
 |        []       => []
-| (hlava :: ocas) => obrat ocas ++ [hlava]
+| (hlava :: telo) => obrat telo ++ [hlava]
 
 #eval obrat seznam123_a
 #eval obrat seznam12345_a

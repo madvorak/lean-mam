@@ -1,8 +1,7 @@
--- import nat
+-- import data.nat.sqrt
 
 
-def obvod_obdelnika (a b : Nat) : Nat :=
-2 * (a + b)
+def obvod_obdelnika (a b : Nat) : Nat := 2 * (a + b)
 
 #eval obvod_obdelnika 3 2
 #eval obvod_obdelnika 10 10
