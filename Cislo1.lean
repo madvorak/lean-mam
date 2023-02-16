@@ -56,3 +56,6 @@ then a
 else (a % 10) + ciferny_soucet (a / 10)
 
 #eval ciferny_soucet 524
+#eval ciferny_soucet 10200
+#eval ciferny_soucet (10^50 - 1)
+#eval ciferny_soucet 0
