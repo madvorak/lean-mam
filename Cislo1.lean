@@ -8,7 +8,7 @@ def obvod_obdelnika (a b : Nat) : Nat := 2 * (a + b)
 
 
 def parita (n : Nat) : String :=
-if n % 2 == 0
+if n % 2 = 0
 then "sude"
 else "liche"
 
@@ -19,7 +19,7 @@ else "liche"
 #eval parita (2 - 3)
 
 
-def je_ctverec (a : Nat) : Bool := (Nat.sqrt a) ^ 2 == a
+def je_ctverec (a : Nat) : Bool := (Nat.sqrt a) ^ 2 = a
 
 #eval je_ctverec 15
 #eval je_ctverec 16
@@ -33,7 +33,7 @@ def je_ctverec (a : Nat) : Bool := (Nat.sqrt a) ^ 2 == a
 
 
 def dvojice_rostouci (x y : Int) : List Int :=
-if x == y
+if x = y
 then [x]
 else if x < y
      then [x, y]
