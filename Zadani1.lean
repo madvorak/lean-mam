@@ -9,6 +9,17 @@ def povrch_kvadru (a b c : Nat) : Nat := 0 -- TODO
 #eval povrch_kvadru 999 1000 1001   /- `5999998` -/
 
 
+def obsah_trojuhelniku (a b c : Float) : Float := 0 -- TODO
+
+#eval obsah_trojuhelniku 12.7 15.8 19.1
+#eval obsah_trojuhelniku 3 4 5
+#eval obsah_trojuhelniku 12 5 13
+#eval obsah_trojuhelniku 1 1 1
+#eval obsah_trojuhelniku 1 1 0
+#eval obsah_trojuhelniku 2 1 1
+#eval obsah_trojuhelniku 500 999 500
+
+
 def je_ctvrta_mocnina (a : Nat) : Bool := false -- TODO
 
 #eval je_ctvrta_mocnina 15

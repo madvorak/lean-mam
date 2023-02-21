@@ -17,18 +17,20 @@ seznam123_a = seznam123_b ∧ seznam123_b = seznam123_c ∧ seznam123_c = seznam
 #eval rovnaji_se
 
 
-def seznam12345_a : List Nat := [1, 2, 3, 4, 5]
-def seznam12345_b : List Nat := seznam123_a ++ [4, 5]
+def seznam12345_a : List Nat := 1 :: 2 :: 3 :: 4 :: 5 :: []
+def seznam12345_b : List Nat := [1, 2, 3, 4, 5]
 def seznam12345_c : List Nat := 1 :: [2, 3, 4] ++ [5]
 def seznam12345_d : List Nat := [1, 2] ++ 3 :: [4, 5]
+def seznam12345_e : List Nat := seznam123_a ++ [4, 5]
 
 #eval seznam12345_a
 #eval seznam12345_b
 #eval seznam12345_c
 #eval seznam12345_d
+#eval seznam12345_e
 
-def rovnaji_se_zase : Bool :=
-seznam12345_a = seznam12345_b ∧ seznam12345_b = seznam12345_c ∧ seznam12345_c = seznam12345_d
+def rovnaji_se_zase : Bool := seznam12345_a = seznam12345_b ∧ seznam12345_b = seznam12345_c ∧
+  seznam12345_c = seznam12345_d ∧ seznam12345_d = seznam12345_e
 #eval rovnaji_se_zase
 
 def nerovnaji_se : Bool := seznam123_a = seznam12345_a
@@ -44,7 +46,7 @@ def soucet : List Int → Int
 #eval soucet (List.map (fun (z : Nat) => z) seznam12345_a)
 
 
-def delka {α : Type} : List α → Nat
+def delka {T : Type} : List T → Nat
 | [ ]       => 0
 | _ :: telo => 1 + delka telo
 
@@ -109,7 +111,53 @@ def skalarni_soucin : List Float → List Float → Float
 | a :: as, b :: bs => a*b + skalarni_soucin as bs
 
 #eval skalarni_soucin [3, 0, 0.5, -2] [2, 8.7, 4, -1]
-#eval skalarni_soucin (List.map Nat.toFloat (List.range 6)) (List.map Nat.toFloat (List.range 6))
-#eval skalarni_soucin (List.map Nat.toFloat (List.range 6)) (obrat $ List.map Nat.toFloat (List.range 6))
-#eval skalarni_soucin (List.map (fun a => Nat.toFloat (a+1)) (List.range 6))
-                      (List.map (fun a => 1 / Nat.toFloat (a+1)) (List.range 6))
+private def jedna_az (n : Nat) : List Float := (List.map (fun a => Nat.toFloat (a+1)) (List.range n))
+#eval skalarni_soucin (jedna_az 5) (jedna_az 5)
+#eval skalarni_soucin (jedna_az 5) (jedna_az 9)
+#eval skalarni_soucin (jedna_az 5) (obrat (jedna_az 5))
+#eval skalarni_soucin (jedna_az 5) (List.map (1 / ·) (jedna_az 5))
+#eval skalarni_soucin (jedna_az 5) (obrat (List.map (1 / ·) (jedna_az 5)))
+#eval skalarni_soucin (jedna_az 100) (List.map ((-1) ^ ·) (jedna_az 100))
+#eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
+
+
+private def obrat_rychl {α : Type} (pripoj : List α) : List α → List α
+| [ ]           => pripoj
+| hlava :: telo => obrat_rychl (hlava :: pripoj) telo
+
+def obrat_rychle {α : Type} (seznam : List α) : List α :=
+obrat_rychl [] seznam
+
+#eval obrat        (seznam123_a ++ seznam12345_a)
+#eval obrat_rychle (seznam123_a ++ seznam12345_a)
+#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat nah = obrat_rychle nah
+#eval obrat_rychle ([] : List Nat)
+
+
+def palindrom {α : Type} [DecidableEq α] (seznam : List α) : Bool :=
+seznam = obrat_rychle seznam
+
+#eval palindrom [1]
+#eval palindrom [1, 7]
+#eval palindrom [1, 7, 1]
+#eval palindrom [1, 7, 1, 1]
+#eval palindrom [1, 7, 1, 1, 7]
+#eval palindrom [1, 7, 1, 1, 7, 1]
+#eval palindrom "oko".toList
+#eval palindrom "okolo".toList
+#eval palindrom "abba".toList
+#eval palindrom "baba".toList
+#eval palindrom "kobyla ma maly bok".toList
+#eval palindrom "kobylamamalybok".toList
+#eval palindrom "()()".toList
+#eval palindrom "())(".toList
+#eval palindrom "".toList
+#eval palindrom (seznam12345_a ++ seznam12345_a)
+#eval palindrom (seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (obrat seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (obrat seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
