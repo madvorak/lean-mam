@@ -1,4 +1,3 @@
-import Cislo1
 import Cislo2
 import Std.Data.Rat.Basic
 import Std.Data.Rat.Lemmas

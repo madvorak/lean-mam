@@ -1,3 +1,4 @@
+import Cislo1
 
 
 def seznam123_a : List Nat := [1, 2, 3]
@@ -143,6 +144,7 @@ seznam = obrat_rychle seznam
 #eval palindrom [1, 7, 1, 1]
 #eval palindrom [1, 7, 1, 1, 7]
 #eval palindrom [1, 7, 1, 1, 7, 1]
+#eval palindrom "".toList
 #eval palindrom "oko".toList
 #eval palindrom "okolo".toList
 #eval palindrom "abba".toList
@@ -151,7 +153,6 @@ seznam = obrat_rychle seznam
 #eval palindrom "kobylamamalybok".toList
 #eval palindrom "()()".toList
 #eval palindrom "())(".toList
-#eval palindrom "".toList
 #eval palindrom (seznam12345_a ++ seznam12345_a)
 #eval palindrom (seznam12345_a ++ obrat seznam12345_a)
 #eval palindrom (seznam12345_a ++ obrat seznam12345_a)
