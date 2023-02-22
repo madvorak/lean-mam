@@ -59,7 +59,21 @@ def delka {T : Type} : List T → Nat
 #eval delka (0 :: seznam123_a ++ seznam12345_a)
 
 
-def obrat {α : Type} : List α → List α
+def je_konstantni {T : Type} [DecidableEq T] : List T → Bool
+| [ ]                      => true
+| [ _ ]                    => true
+| prvni :: druhy :: zbytek => (prvni = druhy) && je_konstantni (druhy :: zbytek)
+
+#eval je_konstantni [5, 5, 5, 5]
+#eval je_konstantni [5, 5, 3, 5]
+#eval je_konstantni [1, 5, 5, 5]
+#eval je_konstantni [5, 5, 5, 4]
+#eval je_konstantni [5, 2, 5, 5]
+#eval je_konstantni ['a', 'A']
+#eval je_konstantni ['a', 'a']
+
+
+def obrat {T : Type} : List T → List T
 | [ ]           => []
 | hlava :: telo => obrat telo ++ [hlava]
 
@@ -70,17 +84,53 @@ def obrat {α : Type} : List α → List α
 #eval obrat seznam12345_a ++ seznam12345_a
 
 
-def je_konstantni {α : Type} [DecidableEq α] : List α → Bool
-| [ ]                      => true
-| [ _ ]                    => true
-| prvni :: druhy :: zbytek => (prvni = druhy) && je_konstantni (druhy :: zbytek)
+private def obrat_rychl {T : Type} (pripoj : List T) : List T → List T
+| [ ]           => pripoj
+| hlava :: telo => obrat_rychl (hlava :: pripoj) telo
 
-#eval je_konstantni [5, 5, 5, 5]
-#eval je_konstantni [5, 5, 3, 5]
-#eval je_konstantni [1, 5, 5, 5]
-#eval je_konstantni [5, 5, 5, 4]
-#eval je_konstantni ['a', 'A']
-#eval je_konstantni ['a', 'a']
+def obrat_rychle {T : Type} (seznam : List T) : List T :=
+obrat_rychl [] seznam
+
+def obrat_rychla {T : Type} : List T → List T
+| seznam => obrat_rychl [] seznam
+
+#eval obrat        (seznam123_a ++ seznam12345_a)
+#eval obrat_rychle (seznam123_a ++ seznam12345_a)
+#eval obrat_rychla (seznam123_a ++ seznam12345_a)
+#eval obrat        ([] : List Nat)
+#eval obrat_rychle ([] : List Nat)
+#eval obrat_rychla ([] : List Nat)
+#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat nah = obrat_rychle nah
+#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat_rychle nah = obrat_rychla nah
+
+
+def je_palindrom {T : Type} [DecidableEq T] (seznam : List T) : Bool :=
+seznam = obrat_rychle seznam
+
+#eval je_palindrom [1]
+#eval je_palindrom [1, 7]
+#eval je_palindrom [1, 7, 1]
+#eval je_palindrom [1, 7, 1, 1]
+#eval je_palindrom [1, 7, 1, 1, 7]
+#eval je_palindrom [1, 7, 1, 1, 7, 1]
+#eval je_palindrom "".toList
+#eval je_palindrom "oko".toList
+#eval je_palindrom "okolo".toList
+#eval je_palindrom "abba".toList
+#eval je_palindrom "baba".toList
+#eval je_palindrom "kobyla ma maly bok".toList
+#eval je_palindrom "kobylamamalybok".toList
+#eval je_palindrom "()()".toList
+#eval je_palindrom "())(".toList
+#eval je_palindrom (seznam12345_a ++ seznam12345_a)
+#eval je_palindrom (seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (obrat seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
+#eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
 
 
 private def fibo_pom (n : Nat) : List Nat → List Nat
@@ -120,45 +170,3 @@ private def jedna_az (n : Nat) : List Float := (List.map (fun a => Nat.toFloat (
 #eval skalarni_soucin (jedna_az 5) (obrat (List.map (1 / ·) (jedna_az 5)))
 #eval skalarni_soucin (jedna_az 100) (List.map ((-1) ^ ·) (jedna_az 100))
 #eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
-
-
-private def obrat_rychl {α : Type} (pripoj : List α) : List α → List α
-| [ ]           => pripoj
-| hlava :: telo => obrat_rychl (hlava :: pripoj) telo
-
-def obrat_rychle {α : Type} (seznam : List α) : List α :=
-obrat_rychl [] seznam
-
-#eval obrat        (seznam123_a ++ seznam12345_a)
-#eval obrat_rychle (seznam123_a ++ seznam12345_a)
-#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat nah = obrat_rychle nah
-#eval obrat_rychle ([] : List Nat)
-
-
-def palindrom {α : Type} [DecidableEq α] (seznam : List α) : Bool :=
-seznam = obrat_rychle seznam
-
-#eval palindrom [1]
-#eval palindrom [1, 7]
-#eval palindrom [1, 7, 1]
-#eval palindrom [1, 7, 1, 1]
-#eval palindrom [1, 7, 1, 1, 7]
-#eval palindrom [1, 7, 1, 1, 7, 1]
-#eval palindrom "".toList
-#eval palindrom "oko".toList
-#eval palindrom "okolo".toList
-#eval palindrom "abba".toList
-#eval palindrom "baba".toList
-#eval palindrom "kobyla ma maly bok".toList
-#eval palindrom "kobylamamalybok".toList
-#eval palindrom "()()".toList
-#eval palindrom "())(".toList
-#eval palindrom (seznam12345_a ++ seznam12345_a)
-#eval palindrom (seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (obrat seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (obrat seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
-#eval palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)

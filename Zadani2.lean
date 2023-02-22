@@ -18,3 +18,17 @@ def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := fun _ => 
 #eval String.mk (vynech_opakovani "ahoj".toList)
 #eval String.mk (vynech_opakovani "ahoooooooooooooooooooooooj".toList)
 #eval String.mk (vynech_opakovani "       a           b            c      ".toList)
+
+
+def jekon {T : Type} [DecidableEq T] : List T → Bool
+| [ ]                      => true
+| [ _ ]                    => true
+| prvni :: druhy :: zbytek => prvni = druhy && je_konstantni zbytek
+
+#eval jekon [5, 5, 5, 5]
+#eval jekon [5, 5, 3, 5]
+#eval jekon [1, 5, 5, 5]
+#eval jekon [5, 5, 5, 4]
+#eval jekon [5, 2, 5, 5]
+#eval jekon ['a', 'A']
+#eval jekon ['a', 'a']
