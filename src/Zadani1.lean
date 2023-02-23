@@ -1,4 +1,4 @@
-import Cislo1
+import src.Cislo1
 
 
 def povrch_kvadru (a b c : Nat) : Nat := 0 -- TODO

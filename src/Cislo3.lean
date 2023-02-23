@@ -1,4 +1,4 @@
-import Cislo2
+import src.Cislo2
 import Std.Data.Rat.Basic
 import Std.Data.Rat.Lemmas
 import Mathlib.Tactic.LibrarySearch
