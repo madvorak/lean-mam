@@ -1,127 +1,49 @@
-import src.Cislo2
-import Std.Data.Rat.Basic
-import Std.Data.Rat.Lemmas
-import Mathlib.Tactic.LibrarySearch
-import Mathlib.Tactic.Linarith
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
-
-
-theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
-  rcases predpoklad with ⟨p,q⟩
-  constructor
-  · exact q
-  · exact p
-
-theorem konjunkce_komutativni_i2 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  intro predpoklad
-  rcases predpoklad with ⟨p,q⟩
-  constructor
-  · exact q
-  · exact p
-
-theorem konjunkce_komutativni_i3 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  rintro ⟨p,q⟩
-  constructor
-  · exact q
-  · exact p
-
-theorem konjunkce_komutativni_i4 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  intro ⟨p,q⟩
-  exact ⟨q,p⟩
-
-theorem konjunkce_komutativni_i5 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  intro predpoklad
-  exact And.symm predpoklad
-
-theorem konjunkce_komutativni_i6 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  exact And.symm
-
-theorem konjunkce_komutativni_i7 {P Q : Prop} : P ∧ Q → Q ∧ P :=
-And.symm
-
-theorem konjunkce_komutativni_e1 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
-  constructor
-  · intro ⟨p,q⟩
-    exact ⟨q,p⟩
-  · intro ⟨q,p⟩
-    exact ⟨p,q⟩
-
-theorem konjunkce_komutativni_e2 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
-  constructor
-  · intro predpoklad
-    exact konjunkce_komutativni_i1 predpoklad
-  · intro predpoklad
-    exact konjunkce_komutativni_i1 predpoklad
-
-theorem konjunkce_komutativni_e3 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
-  constructor
-  · apply konjunkce_komutativni_i7
-  · apply konjunkce_komutativni_i7
-
-theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
-  rw [konjunkce_komutativni_e3]
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.LibrarySearch
 
 
 theorem krat_dva (n : Nat) : n * 2 = n + n := by
   rw [Nat.mul_succ, Nat.mul_one]
 
-theorem krat_dva' : ∀ n : Nat, n * 2 = n + n := by
-  intro x
+theorem soucet_na_druhou (x y : ℝ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by ring
+
+theorem soucet_na_treti (x y : ℝ) : (x + y) ^ 3 = x^3 + 3 * x^2 * y + 3 * x * y^2 + y^3 := by ring
+
+theorem rozdil_na_treti (x y : ℝ) : (x - y) ^ 3 = x^3 - 3 * x^2 * y + 3 * x * y^2 - y^3 := by ring
+
+theorem rozdil_patych_mocnin (x y : ℝ) : x^5 - y^5 = (x - y) * (x^4 + x^3*y + x^2*y^2 + x*y^3 + y^4) := by ring
+
+theorem plus_prevracena (x : ℝ) : x + 1/x = (x^2 + 1) / x := by
+  ring_nf
+  congr
+  convert_to x = x * x * x⁻¹
   ring
+  simp
 
+example (x : ℝ) (predpoklad : x ≠ -1) : (x^2 + x) / (2*x + 2) = x / 2 := by
+  convert_to (x * (x + 1)) / ((x + 1) * 2) = x / 2
+  · ring
+  · ring
+  convert_to x * ((x + 1) / ((x + 1) * 2)) = x / 2
+  · field_simp
+  have pokraceni : (x + 1) / ((x + 1) * 2) = 1 / 2
+  · rw [←div_div, div_self]
+    intro prospor
+    apply predpoklad
+    exact eq_neg_of_add_eq_zero_left prospor
+  rw [pokraceni]
+  rw [mul_div, mul_one]
 
-theorem cislo_55_je_fibonacciho : ∃ n : Nat, fibonacci n = 55 := by
-  use 10
-  rfl
+example (x y : ℝ) : (x + y) ^ 2 - (x - y) ^ 2 = 4 * x * y := by ring
 
+example (x y : ℝ) (predpoklad : 3*x + y ≠ 0) : (3*x + y) ^ 5 / (3*x + y) ^ 4 = 3*x + y := by
+  rw [pow_succ, ←mul_div, div_self, mul_one]
+  exact pow_ne_zero 4 predpoklad
 
-theorem tesne : ∀ n : Nat, ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
-  intro n
-  use n + 1
-  intro k
-  constructor
-  · intro k_le_n
-    rw [Nat.lt_succ]
-    exact k_le_n
-  · intro n_lt_k
-    rw [Nat.succ_le]
-    exact n_lt_k
-
-theorem tesne' (n : Nat) : ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
-  use n + 1
-  intro k
-  constructor
-  · apply Nat.lt_succ_of_le
-  · apply Nat.succ_le.mpr
-
-
-theorem racionalni_cisla_jsou_husta (x z : ℚ) : x < z → ∃ y : ℚ, x < y ∧ y < z := by
-  intro mensi
-  use (x + z) / 2
-  constructor
-  · convert_to x / 2 + x / 2 < x / 2 + z / 2
-    · ring
-    · rw [add_div]
-    · apply add_lt_add_left
-      exact div_lt_div_of_lt two_pos mensi
-  · convert_to x / 2 + z / 2 < z / 2 + z / 2
-    · rw [add_div]
-    · ring
-    · apply add_lt_add_right
-      exact div_lt_div_of_lt two_pos mensi
-
-theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y ∧ y < z := by
-  intro x z mensi
-  use (x + z) / 2
-  constructor
-  · convert_to x / 2 + x / 2 < x / 2 + z / 2
-    · ring
-    · rw [add_div]
-    · apply add_lt_add_left
-      exact div_lt_div_of_lt two_pos mensi
-  · convert_to x / 2 + z / 2 < z / 2 + z / 2
-    · rw [add_div]
-    · ring
-    · apply add_lt_add_right
-      exact div_lt_div_of_lt two_pos mensi
+example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*z*y/x := by
+  have zkratit_x : x^2*z*y/x = x*z*y
+  · field_simp
+    ring
+  rw [zkratit_x]
+  ring

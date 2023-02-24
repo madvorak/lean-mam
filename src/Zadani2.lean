@@ -1,10 +1,11 @@
+import src.Cislo1
 import src.Cislo2
 
 
 def jekon {T : Type} [DecidableEq T] : List T → Bool
 | [ ]                      => true
 | [ _ ]                    => true
-| prvni :: druhy :: zbytek => prvni = druhy && je_konstantni zbytek
+| prvni :: druhy :: zbytek => (prvni = druhy) && jekon zbytek
 
 #eval jekon [5, 5, 5, 5]
 #eval jekon [5, 5, 3, 5]
