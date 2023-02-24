@@ -12,5 +12,5 @@ lean_lib «src/Cislo2»
 lean_lib «src/Cislo3»
 
 @[default_target]
-lean_lib MyProject where
+lean_lib all where
   globs := #[.submodules `src]
