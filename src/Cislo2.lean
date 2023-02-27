@@ -37,12 +37,21 @@ def nerovnaji_se : Bool := seznam123_a = seznam12345_a
 #eval nerovnaji_se
 
 
+def prvnich_N_lichych : Nat → List Nat
+| 0   => []
+| n+1 => (2 * n + 1) :: prvnich_N_lichych n
+
+#eval prvnich_N_lichych 6
+
+
 def soucet : List Nat → Nat
 | [ ]           => 0
 | hlava :: telo => hlava + soucet telo
 
 #eval soucet seznam123_a
 #eval soucet seznam12345_a
+#eval soucet (prvnich_N_lichych 5)
+#eval soucet (prvnich_N_lichych 11)
 
 
 def delka {T : Type} : List T → Nat
@@ -80,6 +89,11 @@ def obrat {T : Type} : List T → List T
 #eval obrat (obrat seznam12345_a)
 #eval seznam123_a ++ obrat seznam123_a
 #eval obrat seznam12345_a ++ seznam12345_a
+
+def prvnich_N_lichych_vzestupne : Nat → List Nat :=
+obrat ∘ prvnich_N_lichych
+
+#eval prvnich_N_lichych_vzestupne 8
 
 
 private def obrat_rychl {T : Type} (pripoj : List T) : List T → List T
