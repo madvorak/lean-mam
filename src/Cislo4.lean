@@ -63,7 +63,7 @@ theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
   rw [konjunkce_komutativni_e3]
 
 
-theorem krat_dva' : ∀ n : Nat, n * 2 = n + n := by
+theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
   intro x
   rw [Nat.mul_succ, Nat.mul_one]
 

@@ -3,7 +3,7 @@ import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.LibrarySearch
 
 
-theorem krat_dva (n : Nat) : n * 2 = n + n := by ring
+theorem dva_krat (n : Nat) : 2 * n = n + n := by ring
 
 theorem soucet_na_druhou (x y : ℚ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by ring
 

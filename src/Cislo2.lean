@@ -37,13 +37,12 @@ def nerovnaji_se : Bool := seznam123_a = seznam12345_a
 #eval nerovnaji_se
 
 
-def soucet : List Int → Int
+def soucet : List Nat → Nat
 | [ ]           => 0
 | hlava :: telo => hlava + soucet telo
 
-#eval soucet [5, -4, -3, 1]
-#eval soucet (List.map (fun (z : Nat) => z) seznam123_a)
-#eval soucet (List.map (fun (z : Nat) => z) seznam12345_a)
+#eval soucet seznam123_a
+#eval soucet seznam12345_a
 
 
 def delka {T : Type} : List T → Nat
