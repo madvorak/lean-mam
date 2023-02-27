@@ -1,4 +1,3 @@
---import src.Cislo1
 
 
 def seznam123_a : List Nat := [1, 2, 3]

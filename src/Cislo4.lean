@@ -65,7 +65,7 @@ theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
 
 theorem krat_dva' : ∀ n : Nat, n * 2 = n + n := by
   intro x
-  ring
+  rw [Nat.mul_succ, Nat.mul_one]
 
 
 theorem cislo_55_je_fibonacciho : ∃ n : Nat, fibonacci n = 55 := by
@@ -122,3 +122,8 @@ theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y �
     · ring
     · apply add_lt_add_right
       exact div_lt_div_of_lt two_pos mensi
+
+example : ∀ a : ℝ, ∃ b : ℝ, b + a = 0 ∧ a + b = 0 := by
+  intro x
+  use -x
+  simp

@@ -16,7 +16,7 @@ def jekon {T : Type} [DecidableEq T] : List T → Bool
 #eval jekon ['a', 'a']
 
 
-def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := fun _ => [] -- TODO
+def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := id -- TODO
 
 #eval vynech_opakovani [1, 3, 3, 1]
 #eval vynech_opakovani [7, 2, 2, 2, 2, 2]
@@ -33,3 +33,14 @@ def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := fun _ => 
 #eval String.mk (vynech_opakovani "ahoj".toList)
 #eval String.mk (vynech_opakovani "ahoooooooooooooooooooooooj".toList)
 #eval String.mk (vynech_opakovani "       a           b            c      ".toList)
+
+
+def prefixove_soucty : List Int → List Int := id -- TODO
+
+#eval prefixove_soucty [1, -5, 3, 2, 2, 2, 2]
+#eval prefixove_soucty [0, 0, 10, -1, -2, -3, -4, -5, 0, 10, 0]
+
+def postfixove_soucty : List Int → List Int := id -- TODO
+
+#eval postfixove_soucty [1, -5, 3, 2, 2, 2, 2]
+#eval postfixove_soucty [0, 0, 10, -1, -2, -3, -4, -5, 0, 10, 0]
