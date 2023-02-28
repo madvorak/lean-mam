@@ -37,11 +37,11 @@ def nerovnaji_se : Bool := seznam123_a = seznam12345_a
 #eval nerovnaji_se
 
 
-def prvnich_N_lichych_sestupne : Nat → List Nat
+def prvnich_n_lichych_sestupne : Nat → List Nat
 | 0   => []
-| n+1 => (2 * n + 1) :: prvnich_N_lichych_sestupne n
+| n+1 => (2 * n + 1) :: (prvnich_n_lichych_sestupne n)
 
-#eval prvnich_N_lichych_sestupne 6
+#eval prvnich_n_lichych_sestupne 6
 
 
 def soucet : List Nat → Nat
@@ -50,8 +50,8 @@ def soucet : List Nat → Nat
 
 #eval soucet seznam123_a
 #eval soucet seznam12345_a
-#eval soucet (prvnich_N_lichych_sestupne 5)
-#eval soucet (prvnich_N_lichych_sestupne 11)
+#eval soucet (prvnich_n_lichych_sestupne 5)
+#eval soucet (prvnich_n_lichych_sestupne 11)
 
 
 def delka {T : Type} : List T → Nat
@@ -62,8 +62,9 @@ def delka {T : Type} : List T → Nat
 #eval delka seznam12345_a
 #eval delka ['a']
 #eval delka ([] : List Float)
-#eval delka (List.range 42)
 #eval delka (0 :: seznam123_a ++ seznam12345_a)
+#eval delka (List.range 42)
+#eval delka (prvnich_n_lichych_sestupne 1999)
 
 
 def je_konstantni {T : Type} [DecidableEq T] : List T → Bool
@@ -90,11 +91,11 @@ def obrat {T : Type} : List T → List T
 #eval seznam123_a ++ obrat seznam123_a
 #eval obrat seznam12345_a ++ seznam12345_a
 
-def prvnich_N_lichych : Nat → List Nat :=
-obrat ∘ prvnich_N_lichych_sestupne
+def prvnich_n_lichych : Nat → List Nat :=
+obrat ∘ prvnich_n_lichych_sestupne
 
-#eval prvnich_N_lichych 8
-#eval soucet (prvnich_N_lichych_sestupne 8)
+#eval prvnich_n_lichych 8
+#eval soucet (prvnich_n_lichych_sestupne 8)
 
 
 private def obrat_rychl {T : Type} (pripoj : List T) : List T → List T
