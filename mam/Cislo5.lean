@@ -1,5 +1,5 @@
-import src.Cislo2
-import src.Cislo3
+import mam.Cislo2
+import mam.Cislo3
 import Mathlib.Tactic.Cases
 import Mathlib.Tactic.LibrarySearch
 import Mathlib.Tactic.Ring

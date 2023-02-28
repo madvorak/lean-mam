@@ -95,7 +95,7 @@ def prvnich_n_lichych : Nat → List Nat :=
 obrat ∘ prvnich_n_lichych_sestupne
 
 #eval prvnich_n_lichych 8
-#eval soucet (prvnich_n_lichych_sestupne 8)
+#eval soucet (prvnich_n_lichych 8)
 
 
 private def obrat_rychl {T : Type} (pripoj : List T) : List T → List T

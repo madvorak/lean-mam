@@ -1,5 +1,5 @@
-import src.Cislo1
-import src.Cislo2
+import mam.Cislo1
+import mam.Cislo2
 
 
 def jekon {T : Type} [DecidableEq T] : List T → Bool
