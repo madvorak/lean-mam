@@ -35,13 +35,24 @@ example (a b c : ℝ) (a_je_dva : a = 2) (b_je_tri : b = 3) (c_je_pet : c = 5) :
   rw [a_je_dva, b_je_tri, c_je_pet]
   ring
 
-example (x : ℝ) (xnz : x ≠ 0) : x^2 / x = x := by
+example (x : ℝ) (xnn : x ≠ 0) : x^2 / x = x := by
   field_simp
   ring
 
-theorem plus_prevracena (x : ℝ) (xnz : x ≠ 0) : x + 1/x = (x^2 + 1) / x := by
+theorem plus_prevracena (x : ℝ) (xnn : x ≠ 0) : x + 1/x = (x^2 + 1) / x := by
   field_simp
   ring
+
+example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := Trans.simple xy yz
+
+example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := Trans.simple xy yz
+
+example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := instTransLtToLTLeToLE.proof_1 xy yz
+
+example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := instTransGtToLTGeToLE.proof_1 yz xy
+
+example (a b c d : ℝ) (abcd : a + b + c ≤ 2 * d) (ab : a ≤ b) (ac : 2 * a ≤ c) : 2 * a ≤ d := by
+  linarith
 
 
 example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
@@ -108,8 +119,5 @@ example (x y : ℝ) (predpoklad : 3*x + y ≠ 0) : (3*x + y) ^ 5 / (3*x + y) ^ 4
   exact pow_ne_zero 4 predpoklad
 
 example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*z*y/x := by
-  have zkratit_x : x^2*z*y/x = x*z*y
-  · field_simp
-    ring
-  rw [zkratit_x]
+  field_simp
   ring
