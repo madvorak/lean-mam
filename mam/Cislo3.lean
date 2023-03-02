@@ -43,15 +43,37 @@ theorem plus_prevracena (x : ℝ) (xnn : x ≠ 0) : x + 1/x = (x^2 + 1) / x := b
   field_simp
   ring
 
+
 example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := Trans.simple xy yz
 
 example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := Trans.simple xy yz
 
 example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := instTransLtToLTLeToLE.proof_1 xy yz
 
-example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := instTransGtToLTGeToLE.proof_1 yz xy
+example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := xy.trans_lt yz
 
 example (a b c d : ℝ) (abcd : a + b + c ≤ 2 * d) (ab : a ≤ b) (ac : 2 * a ≤ c) : 2 * a ≤ d := by
+  linarith
+
+example (x y : ℝ) (xy : x ≤ y) : x ≤ y + y*y := by nlinarith
+
+example (x y : ℝ) (x_zaporne : x < 0) (y_zaporne : y < 0) : x * 7 * y > 0 := by nlinarith
+
+example (x y : ℝ) : x*x - 2*x*y + y*y ≥ 0 := by
+  convert_to (x - y) ^ 2 ≥ 0
+  ring
+  nlinarith
+
+example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0 := by
+  convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
+  ring
+  nlinarith
+
+example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
+  have pomocna : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
+  · convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
+    · ring
+    nlinarith
   linarith
 
 
