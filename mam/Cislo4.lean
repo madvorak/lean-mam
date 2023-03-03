@@ -59,12 +59,26 @@ theorem konjunkce_komutativni_e3 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   · apply konjunkce_komutativni_i7
   · apply konjunkce_komutativni_i7
 
-theorem konjunkce_komutativni_e4 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
-  tauto
-
 theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
   rw [konjunkce_komutativni_e3]
 
+
+theorem blbina : 1 + 1 ≠ 3 := by ring
+
+theorem blbinka : ¬ (1 + 1 = 3) := blbina
+
+theorem blbinecka : (1 + 1 = 3) → False := blbinka
+
+theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
+  intro hyp
+  by_cases p : P
+  · have negace : ¬ P
+    · rw [hyp] at p
+      exact p
+    exact negace p
+  apply p
+  rw [hyp]
+  exact p
 
 theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
   intro x
@@ -73,7 +87,6 @@ theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
 theorem cislo_55_je_fibonacciho : ∃ n : Nat, fibonacci n = 55 := by
   use 10
   rfl
-
 
 theorem tesne : ∀ n : Nat, ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   intro n
@@ -126,35 +139,17 @@ theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y �
       exact div_lt_div_of_lt two_pos mensi
 
 
-theorem pseudoCantorova {T : Type} : ¬ ∃ f : (Set T) → Set (Set T), Function.Surjective f := by
-  intro pro_spor
-  cases' pro_spor with f surjektivni
-  cases' surjektivni (fun M => ¬ f M M) with A sporne
-  have paradox : f A A = ¬ f A A
-  · exact congrFun sporne A
-  by_cases f A A
-  · have not_h : ¬ f A A
-    · rw [paradox] at h
-      exact h
-    exact not_h h
-  apply h
-  rw [paradox]
-  exact h
-
-theorem Cantorova {T : Type} : ¬ ∃ f : T → Set T, Function.Surjective f := by
+theorem Cantorova_veta {T : Type} : ¬ (∃ f : T → Set T, Function.Surjective f) := by
   intro pro_spor
   cases' pro_spor with f surjektivni
   cases' surjektivni (fun x => x ∉ f x) with a sporne
   have paradox : (a ∈ f a) ↔ (a ∉ f a)
   · exact of_eq (congrArg (Membership.mem a) sporne)
-  tauto
+  exact nemozna_ekvivalence paradox
 
-theorem pseudoCantorova' {T : Type} : ¬ ∃ f : (Set T) → Set (Set T), Function.Surjective f := by
+theorem Cantoruv_dusledek {T : Type} : ¬ (∃ g : Set T → T, Function.Injective g) := by
   intro pro_spor
-  cases' pro_spor with f surjektivni
-  apply Cantorova
-  use f
-  exact surjektivni
-
-theorem pseudoCantorova'' {T : Type} : ¬ ∃ f : (Set T) → Set (Set T), Function.Surjective f := by
-  apply Cantorova
+  cases' pro_spor with f prosta
+  apply Cantorova_veta
+  use Function.invFun f
+  exact Function.invFun_surjective prosta
