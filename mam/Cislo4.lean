@@ -1,6 +1,4 @@
 import mam.Cislo1
-import Std.Data.Rat.Basic
-import Std.Data.Rat.Lemmas
 import Mathlib.Tactic.LibrarySearch
 import Mathlib.Tactic.Linarith
 import Mathlib.Data.Rat.Basic
@@ -65,9 +63,9 @@ theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
 
 theorem blbina : 1 + 1 ≠ 3 := by ring
 
-theorem blbinka : ¬ (1 + 1 = 3) := blbina
+example : ¬ (1 + 1 = 3) := blbina
 
-theorem blbinecka : (1 + 1 = 3) → False := blbinka
+example : (1 + 1 = 3) → False := blbina
 
 theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
   intro hyp
@@ -80,6 +78,7 @@ theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
   rw [hyp]
   exact p
 
+
 theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
   intro x
   ring
@@ -87,6 +86,7 @@ theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
 theorem cislo_55_je_fibonacciho : ∃ n : Nat, fibonacci n = 55 := by
   use 10
   rfl
+
 
 theorem tesne : ∀ n : Nat, ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   intro n
@@ -139,7 +139,7 @@ theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y �
       exact div_lt_div_of_lt two_pos mensi
 
 
-theorem Cantorova_veta {T : Type} : ¬ (∃ f : T → Set T, Function.Surjective f) := by
+theorem Cantorova_veta (T : Type) : ¬ (∃ f : T → Set T, Function.Surjective f) := by
   intro pro_spor
   cases' pro_spor with f surjektivni
   cases' surjektivni (fun x => x ∉ f x) with a sporne
@@ -147,7 +147,7 @@ theorem Cantorova_veta {T : Type} : ¬ (∃ f : T → Set T, Function.Surjective
   · exact of_eq (congrArg (Membership.mem a) sporne)
   exact nemozna_ekvivalence paradox
 
-theorem Cantoruv_dusledek {T : Type} : ¬ (∃ g : Set T → T, Function.Injective g) := by
+theorem Cantoruv_dusledek (T : Type) : ¬ (∃ g : Set T → T, Function.Injective g) := by
   intro pro_spor
   cases' pro_spor with f prosta
   apply Cantorova_veta

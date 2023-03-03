@@ -70,10 +70,17 @@ example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0 := by
   nlinarith
 
 example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
-  have pomocna : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
+  have pomocne : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
   · convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
     · ring
     nlinarith
+  linarith
+
+example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
+  have pomocne : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
+  convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
+  ring
+  nlinarith
   linarith
 
 

@@ -1,3 +1,4 @@
+import mam.Cislo1
 
 
 def seznam123_a : List Nat := [1, 2, 3]
@@ -147,29 +148,6 @@ seznam = obrat_rychle seznam
 #eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
 
 
-private def fibo_pom (n : Nat) : List Nat → List Nat
-| [ ]         => []
-| [ _ ]       => []
-| a :: b :: l => if n = 0
-                 then a :: b :: l
-                 else fibo_pom (n-1) ((a+b) :: a :: b :: l)
-
-def fibo_list (n : Nat) : List Nat :=
-obrat (fibo_pom (n-2) [1, 0])
-
-#eval fibo_list 12
-
-def seznam_pomeru : List Nat → List Float
-| [ ]         => []
-| [ _ ]       => []
-| a :: b :: l => (Nat.toFloat a / Nat.toFloat b) :: seznam_pomeru (b :: l)
-
-def fibo_pomery (n : Nat) : List Float :=
-seznam_pomeru (fibo_list (n+1))
-
-#eval fibo_pomery 25
-
-
 def skalarni_soucin : List Float → List Float → Float
 | [ ]    , _       => 0
 | _      , [ ]     => 0
@@ -184,3 +162,84 @@ private def jedna_az (n : Nat) : List Float := (List.map (fun a => Nat.toFloat (
 #eval skalarni_soucin (jedna_az 5) (obrat (List.map (1 / ·) (jedna_az 5)))
 #eval skalarni_soucin (jedna_az 100) (List.map ((-1) ^ ·) (jedna_az 100))
 #eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
+
+
+private def fibo_gen (n : Nat) : List Nat → List Nat
+| [ ]         => []
+| [ _ ]       => []
+| a :: b :: l => if n = 0
+                 then a :: b :: l
+                 else fibo_gen (n-1) ((a+b) :: a :: b :: l)
+
+def fibo_list (n : Nat) : List Nat :=
+obrat (fibo_gen (n-2) [1, 0])
+
+#eval fibo_list 12
+
+def seznam_pomeru : List Nat → List Float
+| [ ]         => []
+| [ _ ]       => []
+| a :: b :: l => (Nat.toFloat a / Nat.toFloat b) :: seznam_pomeru (b :: l)
+
+def fibo_pomery (n : Nat) : List Float :=
+seznam_pomeru (fibo_list (n+1))
+
+#eval fibo_pomery 25
+
+
+def rozdily : List Nat → List Nat
+| [ ]         => []
+| [ _ ]       => []
+| a :: b :: l => (b-a) :: rozdily (b :: l)
+
+#eval rozdily [5, 5, 9, 19, 99, 100]
+#eval rozdily seznam12345_a
+#eval rozdily [42]
+#eval rozdily []
+#eval List.map (· ^ 2) (List.range 14)
+#eval rozdily (List.map (· ^ 2) (List.range 14))
+#eval rozdily (rozdily (List.map (· ^ 2) (List.range 14)))
+#eval rozdily (rozdily (rozdily (List.map (· ^ 2) (List.range 14))))
+#eval List.map (· ^ 3) (List.range 13)
+#eval rozdily $ List.map (· ^ 3) (List.range 13)
+#eval rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
+#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
+#eval List.map (· ^ 4) (List.range 12)
+#eval rozdily $ List.map (· ^ 4) (List.range 12)
+#eval rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
+#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
+#eval List.map (· ^ 5) (List.range 11)
+#eval rozdily $ List.map (· ^ 5) (List.range 11)
+#eval rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
+#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
+#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
+
+
+def aplikuj_tolikrat {β : Type} (operace : β → β) (vstup : β) : Nat → β
+| 0   => vstup
+| n+1 => aplikuj_tolikrat operace (operace vstup) n
+
+#eval aplikuj_tolikrat (· + 3) 10 5
+#eval aplikuj_tolikrat (1 :: ·) [] 9
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 3
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 6
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 9
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 12
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 15
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 50
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 100
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (-100000 : Float) 100
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 2) (List.range 10)) 2
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 3) (List.range 10)) 3
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 4) (List.range 10)) 4
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 5) (List.range 10)) 5
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 6) (List.range 10)) 6
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 7) (List.range 10)) 7
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 8) (List.range 10)) 8
+#eval aplikuj_tolikrat rozdily (List.map (· ^ 9) (List.range 10)) 9
+#eval faktorial 9
