@@ -1,8 +1,8 @@
 import mam.Cislo1
-import Mathlib.Tactic.LibrarySearch
-import Mathlib.Tactic.Linarith
 import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LibrarySearch
 
 
 theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
