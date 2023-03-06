@@ -43,6 +43,10 @@ theorem plus_prevracena (x : ℝ) (xnn : x ≠ 0) : x + 1/x = (x^2 + 1) / x := b
   field_simp
   ring
 
+example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*z*y/x := by
+  field_simp
+  ring
+
 
 example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := Trans.simple xy yz
 
@@ -52,8 +56,7 @@ example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := instTransLtToLTLeTo
 
 example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := xy.trans_lt yz
 
-example (a b c d : ℝ) (abcd : a + b + c ≤ 2 * d) (ab : a ≤ b) (ac : 2 * a ≤ c) : 2 * a ≤ d := by
-  linarith
+example (a b c d : ℝ) (abcd : a + b + c ≤ 2 * d) (ab : a ≤ b) (ac : 2 * a ≤ c) : 2 * a ≤ d := by linarith
 
 example (x y : ℝ) (xy : x ≤ y) : x ≤ y + y*y := by nlinarith
 
@@ -114,21 +117,6 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     convert this
     field_simp
 
--- based on proof by Alex J. Best
-example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
-  have xne : x ≠ 0  :=  LT.lt.ne' xpos
-  suffices : (x + 1/x) * x ≥ 2 * x
-  . nlinarith
-  simp
-  rw [RightDistribClass.right_distrib x x⁻¹ x]
-  rw [inv_mul_cancel xne]
-  suffices : 2 * x - 2 * x ≤ x * x + 1 - 2 * x
-  . linarith
-  rw [show x * x + 1 - 2 * x = (x - 1) ^ 2 by ring]
-  simp
-  exact pow_two_nonneg (x - 1)
-
-
 example (x : ℝ) (predpoklad : x ≠ -1) : (x^2 + x) / (2*x + 2) = x / 2 := by
   convert_to (x * (x + 1)) / ((x + 1) * 2) = x / 2
   · ring
@@ -146,7 +134,3 @@ example (x : ℝ) (predpoklad : x ≠ -1) : (x^2 + x) / (2*x + 2) = x / 2 := by
 example (x y : ℝ) (predpoklad : 3*x + y ≠ 0) : (3*x + y) ^ 5 / (3*x + y) ^ 4 = 3*x + y := by
   rw [pow_succ, ←mul_div, div_self, mul_one]
   exact pow_ne_zero 4 predpoklad
-
-example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*z*y/x := by
-  field_simp
-  ring

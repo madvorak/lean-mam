@@ -51,7 +51,6 @@ def soucet : List Nat → Nat
 
 #eval soucet seznam123_a
 #eval soucet seznam12345_a
-#eval soucet (prvnich_n_lichych_sestupne 5)
 #eval soucet (prvnich_n_lichych_sestupne 11)
 
 
@@ -115,8 +114,10 @@ def obrat_rychla {T : Type} : List T → List T
 #eval obrat        ([] : List Nat)
 #eval obrat_rychle ([] : List Nat)
 #eval obrat_rychla ([] : List Nat)
-#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat nah = obrat_rychle nah
-#eval let nah := [5,2,6,0,2,8,4,1,2,3,6,9,1,5,5,5,5,4,7,0,2,3,4,9,8,1,6,4,5]; obrat_rychle nah = obrat_rychla nah
+private def nah := [5, 2, 6, 0, 2, 8, 4, 1, 2, 3, 6, 9, 1, 5, 5, 5, 4, 7, 0, 2, 3, 4, 9, 8, 1, 6, 4, 5]
+#eval obrat nah = obrat_rychle nah
+#eval obrat_rychle nah = obrat_rychla nah
+#eval obrat_rychla (obrat nah) = nah
 
 
 def je_palindrom {T : Type} [DecidableEq T] (seznam : List T) : Bool :=
