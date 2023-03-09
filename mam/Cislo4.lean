@@ -6,7 +6,7 @@ import Mathlib.Tactic.LibrarySearch
 
 
 theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
-  rcases predpoklad with ⟨p,q⟩
+  cases' predpoklad with p q
   constructor
   · exact q
   · exact p

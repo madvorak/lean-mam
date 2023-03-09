@@ -45,7 +45,7 @@ else if x < y
 
 
 def faktorial : Nat → Nat
-| 0     => 1
+| 0   => 1
 | n+1 => (n+1) * (faktorial n)
 
 #eval faktorial 6
@@ -54,8 +54,8 @@ def faktorial : Nat → Nat
 
 
 def fibonacci : Nat → Nat
-| 0     => 0
-| 1     => 1
+| 0   => 0
+| 1   => 1
 | n+2 => fibonacci n + fibonacci (n+1)
 
 #eval fibonacci 5

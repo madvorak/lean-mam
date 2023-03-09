@@ -1,5 +1,7 @@
+import mam.Cislo1
 import mam.Cislo2
 import mam.Cislo3
+import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic.Cases
 import Mathlib.Tactic.LibrarySearch
 
@@ -45,3 +47,48 @@ theorem dva_na_vs_na_druhou (n : Nat) (aspon_pet : n ≥ 5) : 2^n > n^2 := by
   · exact Nat.eq_add_of_sub_eq aspon_pet rfl
   rw [minus5_plus5]
   exact dva_na_vs_na_druhou_aux (n - 5)
+
+
+lemma binetuv_aux {x : ℝ} (hx : x * x = x + 1) (m : Nat) : x ^ (m+1) = x * (fibonacci (m+1)) + fibonacci m := by
+  induction' m with n ih
+  · simp [fibonacci]
+  rw [pow_succ, ih]
+  simp only [fibonacci, Nat.succ_eq_add_one, mul_add, ←mul_assoc, hx]
+  ring
+  simp
+  ring -- TODO najit mnohem elementarnejsi dukaz !!!!!!
+
+theorem binetuv_vzorec (n : Nat) : fibonacci n = (1 / Real.sqrt 5) * (((1 + Real.sqrt 5) / 2) ^ n - ((1 - Real.sqrt 5) / 2) ^ n) := by
+  have pet_nz : 0 ≤ (5 : ℝ)
+  · linarith
+  have odm5nd : Real.sqrt 5 * Real.sqrt 5 = (5 : ℝ)
+  · exact Real.mul_self_sqrt pet_nz
+  have odm5nn : Real.sqrt 5 ≠ 0
+  · intro pro_spor
+    have spor : Real.sqrt 5 * Real.sqrt 5 = 0 * Real.sqrt 5
+    · exact congrFun (congrArg HMul.hMul pro_spor) (Real.sqrt 5)
+    rw [odm5nd] at spor
+    rw [zero_mul] at spor -- TODO tento krok jinak
+    linarith -- tento krok mozna taky
+  cases' n with m ih
+  · simp [fibonacci]
+  rw [binetuv_aux, binetuv_aux]
+  ring
+  convert_to (fibonacci (Nat.succ m)) = (1 : ℝ) * (fibonacci (1 + m))
+  · exact CommGroupWithZero.mul_inv_cancel (Real.sqrt 5) odm5nn
+  convert_to (fibonacci (Nat.succ m) : ℝ) = (fibonacci (m + 1) : ℝ)
+  · ring
+  rfl
+  -- TODO zbyvajici dva dukazy predelat
+  · rw [mul_div]
+    have asdf : (1 - Real.sqrt 5) / 2 * (1 - Real.sqrt 5) = (1 - Real.sqrt 5) * (1 - Real.sqrt 5) / 2
+    · exact div_mul_eq_mul_div₀ (1 - Real.sqrt 5) (1 - Real.sqrt 5) 2
+    rw [asdf]
+    rw [sub_mul, mul_sub, mul_sub, odm5nd, one_mul, one_mul, mul_one]
+    ring
+  · rw [mul_div]
+    have asdf : (1 + Real.sqrt 5) / 2 * (1 + Real.sqrt 5) = (1 + Real.sqrt 5) * (1 + Real.sqrt 5) / 2
+    · exact div_mul_eq_mul_div₀ (1 + Real.sqrt 5) (1 + Real.sqrt 5) 2
+    rw [asdf]
+    rw [add_mul, mul_add, mul_add, odm5nd, one_mul, one_mul, mul_one]
+    ring
