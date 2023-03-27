@@ -79,16 +79,16 @@ theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
   exact p
 
 
-theorem krat_dva : ∀ n : Nat, n * 2 = n + n := by
+theorem krat_dva : ∀ n : ℕ, n * 2 = n + n := by
   intro x
   ring
 
-theorem cislo_55_je_fibonacciho : ∃ n : Nat, fibonacci n = 55 := by
+theorem cislo_55_je_fibonacciho : ∃ n : ℕ, fibonacci n = 55 := by
   use 10
   rfl
 
 
-theorem tesne : ∀ n : Nat, ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
+theorem tesne : ∀ n : ℕ, ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   intro n
   use n + 1
   intro k
@@ -100,7 +100,7 @@ theorem tesne : ∀ n : Nat, ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (
     rw [Nat.succ_le]
     exact n_lt_k
 
-theorem tesne' (n : Nat) : ∃ m : Nat, ∀ k : Nat, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
+theorem tesne' (n : ℕ) : ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   use n + 1
   intro k
   constructor
