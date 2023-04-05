@@ -18,8 +18,6 @@ theorem rozdil_na_treti (x y : ℚ) : (x - y) ^ 3 = x^3 - 3*x^2*y + 3*x*y^2 - y^
 
 theorem rozdil_patych_mocnin (x y : ℝ) : x^5 - y^5 = (x - y) * (x^4 + x^3*y + x^2*y^2 + x*y^3 + y^4) := by ring
 
-example (x y : ℝ) : (x + y) ^ 2 - (x - y) ^ 2 = 4 * x * y := by ring
-
 example (n : Nat) : 2 ^ (n+3) = 8 * 2^n := by ring
 
 example (n : Nat) (n_je_pet : n = 5) : n - 1 = 4 := by
@@ -86,8 +84,37 @@ example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
   nlinarith
   linarith
 
-
 example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
+  have : (x - 1) ^ 2 ≥ 0
+  · exact pow_two_nonneg (x - 1)
+  have : x*x + 1 - 2*x ≥ 0
+  · convert this
+    ring
+  have : x*x + 1 ≥ 2*x
+  · exact le_of_sub_nonneg this
+  have : (x*x + 1) / x ≥ 2*x / x
+  · have levy_citatel_nezap : x*x + 1 ≥ 0
+    · nlinarith
+    have samozrejmost : x ≤ x
+    · rfl
+    exact div_le_div levy_citatel_nezap this xpos samozrejmost
+  have : x*x / x + 1 / x ≥ 2*x / x
+  · convert this
+    exact div_add_div_same (x*x) 1 x
+  convert this
+  · convert_to x = x * x * x⁻¹
+    · simp
+  · have : (2 : ℝ) = 2 * 1 -- zkusit najit snazsi dukaz `2 = 2 * x / x`
+    · ring
+    have : 2 = 2 * (x / x)
+    · convert this
+      have : x ≠ 0
+      · exact LT.lt.ne' xpos
+      exact div_self this
+    convert this
+    exact IsAssociative.assoc 2 x x⁻¹
+
+example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by -- obsolete
   have : (x - 1) ^ 2 ≥ 0
   · exact pow_two_nonneg (x - 1)
   have : x^2 + 1 - 2*x ≥ 0
@@ -101,12 +128,13 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     have wtf : x ≤ x
     · rfl
     exact div_le_div left_numerator_nneg this xpos wtf
+  have : x^2 / x + 1 / x ≥ (2*x) / x
+  · convert this
+    exact div_add_div_same (x ^ 2) 1 x
   convert this
-  · ring_nf
-    congr
-    convert_to x = x * x * x⁻¹
-    ring
-    simp
+  · convert_to x = x * x * x⁻¹
+    · ring
+    · simp
   · have : (2 : ℝ) = 2 * 1
     · ring
     have : 2 = 2 * (x / x)
@@ -115,22 +143,4 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
       · exact LT.lt.ne' xpos
       exact div_self this
     convert this
-    field_simp
-
-example (x : ℝ) (predpoklad : x ≠ -1) : (x^2 + x) / (2*x + 2) = x / 2 := by
-  convert_to (x * (x + 1)) / ((x + 1) * 2) = x / 2
-  · ring
-  · ring
-  convert_to x * ((x + 1) / ((x + 1) * 2)) = x / 2
-  · field_simp
-  have pokraceni : (x + 1) / ((x + 1) * 2) = 1 / 2
-  · rw [←div_div, div_self]
-    intro prospor
-    apply predpoklad
-    exact eq_neg_of_add_eq_zero_left prospor
-  rw [pokraceni]
-  rw [mul_div, mul_one]
-
-example (x y : ℝ) (predpoklad : 3*x + y ≠ 0) : (3*x + y) ^ 5 / (3*x + y) ^ 4 = 3*x + y := by
-  rw [pow_succ, ←mul_div, div_self, mul_one]
-  exact pow_ne_zero 4 predpoklad
+    exact IsAssociative.assoc 2 x x⁻¹

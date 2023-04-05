@@ -14,22 +14,25 @@ by
   unfold prvnich_n_lichych_sestupne
   unfold soucet
   rw [ih, dva_krat]
-  rw [add_comm, add_assoc, add_assoc]
+  convert_to m + m + 1 + m * m = m * m + m + (m + 1)
+  ring
 
 lemma soucet_dvou_seznamu (x y : List ℕ) : soucet (x ++ y) = soucet x + soucet y :=
 by
   induction' x with x₀ xs ih
   · simp
   convert_to x₀ + soucet (xs ++ y) = x₀ + soucet xs + soucet y
-  rw [ih, add_assoc]
+  rw [ih]
+  ring
 
 lemma obrat_zachovava_soucet (l : List ℕ) : soucet (obrat l) = soucet l :=
 by
   induction' l with hlava zbytek indukcni
   · rfl
   unfold obrat
-  rw [soucet_dvou_seznamu, indukcni, add_comm]
-  rfl
+  rw [soucet_dvou_seznamu, indukcni]
+  convert_to soucet zbytek + soucet [hlava] = soucet [hlava] + soucet zbytek
+  ring
 
 theorem soucet_prvnich_N_lichych (n : ℕ) : soucet (prvnich_n_lichych n) = n * n :=
 by

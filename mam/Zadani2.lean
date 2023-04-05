@@ -2,6 +2,11 @@ import mam.Cislo1
 import mam.Cislo2
 
 
+def nasobky_sedmi : Nat → List Nat := fun _ => [] -- TODO
+
+#eval nasobky_sedmi 6
+
+
 def jekon {T : Type} [DecidableEq T] : List T → Bool
 | [ ]                      => true
 | [ _ ]                    => true
