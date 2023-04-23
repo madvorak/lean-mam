@@ -72,3 +72,41 @@ else (a % 10) + ciferny_soucet (a / 10)
 #eval ciferny_soucet 10200
 #eval ciferny_soucet (10^50 - 1)
 #eval ciferny_soucet 0
+
+
+partial def ciferny_soucet_zdlouhave : Nat → Nat
+| 0    => 0
+| 1    => 1
+| 2    => 2
+| 3    => 3
+| 4    => 4
+| 5    => 5
+| 6    => 6
+| 7    => 7
+| 8    => 8
+| 9    => 9
+| a+10 => (a % 10) + ciferny_soucet_zdlouhave (a / 10 + 1)
+
+#eval ciferny_soucet_zdlouhave 524
+#eval ciferny_soucet_zdlouhave 10200
+#eval ciferny_soucet_zdlouhave (10^50 - 1)
+#eval ciferny_soucet_zdlouhave 0
+
+
+private def suma_pres_radek (f : Nat → Nat → Float) (m : Nat) : Nat → Float
+| 0   => 0
+| n+1 => f m n + suma_pres_radek f m n
+
+private def suma_pres_obdelnik (f : Nat → Nat → Float) (n : Nat) : Nat → Float
+| 0   => 0
+| m+1 => suma_pres_radek f m n + suma_pres_obdelnik f n m
+
+def suma_pres_ctverec (f : Nat → Nat → Float) (n : Nat) : Float :=
+suma_pres_obdelnik f n n
+
+#eval suma_pres_ctverec (fun _ _ => 1.0) 7
+#eval suma_pres_ctverec (fun _ k => Nat.toFloat k) 5
+#eval suma_pres_ctverec (fun x y => Nat.toFloat (x * y)) 4
+#eval suma_pres_ctverec (fun a b => 1.0 / (1.0 + Nat.toFloat a) / (1.0 + Nat.toFloat b)) 100
+#eval suma_pres_ctverec (fun i j => (if i = j then 1.0 else 0.0)) 42
+#eval suma_pres_ctverec (fun α β => (Float.sin (Nat.toFloat (α + β)))) 100
