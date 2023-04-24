@@ -76,11 +76,11 @@ else (a % 10) + ciferny_soucet (a / 10)
 
 private def suma_pres_radek (f : Nat → Nat → Float) (m : Nat) : Nat → Float
 | 0   => 0
-| n+1 => f m n + suma_pres_radek f m n
+| n+1 => (f m n) + (suma_pres_radek f m n)
 
 private def suma_pres_obdelnik (f : Nat → Nat → Float) (n : Nat) : Nat → Float
 | 0   => 0
-| m+1 => suma_pres_radek f m n + suma_pres_obdelnik f n m
+| m+1 => (suma_pres_radek f m n) + (suma_pres_obdelnik f n m)
 
 def suma_pres_ctverec (f : Nat → Nat → Float) (n : Nat) : Float :=
 suma_pres_obdelnik f n n
