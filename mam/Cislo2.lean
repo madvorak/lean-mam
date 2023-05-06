@@ -150,8 +150,8 @@ seznam = obrat_rychle seznam
 
 
 def skalarni_soucin : List Float → List Float → Float
-| [ ]    , _       => 0
-| _      , [ ]     => 0
+| [ ]    , _       => 0.0
+| _      , [ ]     => 0.0
 | a :: as, b :: bs => a*b + skalarni_soucin as bs
 
 #eval skalarni_soucin [3, 0, 0.5, -2] [2, 8.7, 4, -1]
@@ -227,14 +227,14 @@ def aplikuj_tolikrat {β : Type} (operace : β → β) (vstup : β) : Nat → β
 
 #eval aplikuj_tolikrat (· + 3) 10 5
 #eval aplikuj_tolikrat (1 :: ·) [] 9
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 3
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 6
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 9
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 12
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 15
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 50
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (42 : Float) 100
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (-100000 : Float) 100
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 3
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 6
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 9
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 12
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 15
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 50
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 100
+#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (-100000.0) 100
 #eval aplikuj_tolikrat rozdily (List.map (· ^ 2) (List.range 10)) 2
 #eval aplikuj_tolikrat rozdily (List.map (· ^ 3) (List.range 10)) 3
 #eval aplikuj_tolikrat rozdily (List.map (· ^ 4) (List.range 10)) 4
