@@ -5,6 +5,128 @@ import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.LibrarySearch
 
 
+theorem aplikace_implikace_1 {P Q : Prop} (p : P) (pq : P → Q) : Q := by
+  apply pq
+  apply p
+
+theorem aplikace_implikace_2 {P Q : Prop} (p : P) (pq : P → Q) : Q := by
+  apply pq
+  exact p
+
+theorem aplikace_implikace_3 {P Q : Prop} (p : P) (pq : P → Q) : Q := by
+  exact pq p
+
+theorem aplikace_implikace_4 {P Q : Prop} (p : P) (pq : P → Q) : Q :=
+pq p
+
+theorem aplikace_implikaci_1 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R) : R := by
+  apply qr
+  apply pq
+  exact p
+
+theorem aplikace_implikaci_2 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R) : R := by
+  apply qr
+  exact pq p
+
+theorem aplikace_implikaci_3 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R) : R :=
+qr (pq p)
+
+theorem aplikace_implikaci_4 {P Q R : Prop} (h₁ : P) (h₂ : P → Q) (h₃ : Q → R) : R :=
+h₃ (h₂ h₁)
+
+theorem skladani_implikaci_1 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R := by
+  intro p
+  apply qr
+  apply pq
+  exact p
+
+theorem skladani_implikaci_2 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R := by
+  intro p
+  exact qr (pq p)
+
+theorem skladani_implikaci_3 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R := by
+  exact fun p => qr (pq p)
+
+theorem skladani_implikaci_4 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R :=
+fun p => qr (pq p)
+
+theorem skladani_implikaci_5 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R :=
+qr ∘ pq
+
+example {P Q R S T : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (pqrst : P → Q → R → S → T) : T := by
+  apply pqrst
+  · exact p
+  · apply pq
+    exact p
+  · apply qr
+    apply pq
+    exact p
+  · apply rs
+    apply qr
+    apply pq
+    exact p
+
+example {P Q R S T : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (pqrst : P → Q → R → S → T) : T :=
+pqrst p (pq p) (qr (pq p)) (rs (qr (pq p)))
+
+example {P Q R S T : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (pqrst : P → Q → R → S → T) : T := by
+  have q : Q
+  · exact pq p
+  have r : R
+  · exact qr q
+  apply pqrst
+  · exact p
+  · exact q
+  · exact r
+  · exact rs r
+
+example {P Q R S T : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (pqrst : P → Q → R → S → T) : T := by
+  have q : Q
+  · exact pq p
+  have r : R
+  · exact qr q
+  have s : S
+  · exact rs r
+  exact pqrst p q r s
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U := by
+  apply stu
+  · apply rs
+    apply qr
+    apply pq
+    exact p
+  · apply rt
+    apply qr
+    apply pq
+    exact p
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U := by
+  apply stu
+  · apply rs
+    exact qr (pq p)
+  · apply rt
+    exact qr (pq p)
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U :=
+stu (rs (qr (pq p))) (rt (qr (pq p)))
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U := by
+  have r : R
+  · apply qr
+    exact pq p
+  apply stu
+  · apply rs
+    exact r
+  · apply rt
+    exact r
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U :=
+let r := qr (pq p) ;
+stu (rs r) (rt r)
+
+example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U := by
+  tauto
+
 theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
   cases' predpoklad with p q
   constructor
@@ -56,6 +178,9 @@ theorem konjunkce_komutativni_e3 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   constructor
   · apply konjunkce_komutativni_i7
   · apply konjunkce_komutativni_i7
+
+theorem konjunkce_komutativni_e4 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
+  tauto
 
 theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
   rw [konjunkce_komutativni_e3]
