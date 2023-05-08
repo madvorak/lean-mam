@@ -90,3 +90,13 @@ suma_pres_obdelnik f n n
 #eval suma_pres_ctverec (fun x y => Nat.toFloat (x * y)) 4
 #eval suma_pres_ctverec (fun a b => 1.0 / (1.0 + Nat.toFloat a) / (1.0 + Nat.toFloat b)) 100
 #eval suma_pres_ctverec (fun i j => (if i = j then 1.0 else 0.0)) 42
+
+
+partial def ackermann : Nat → Nat → Nat
+| 0  , n   => n+1
+| m+1, 0   => ackermann m 1
+| m+1, n+1 => ackermann m (ackermann (m+1) n)
+
+#eval ackermann 2 100
+#eval ackermann 3 0
+#eval ackermann 3 5
