@@ -112,6 +112,12 @@ partial def ciferace (a : Nat) : Nat := 0 -- TODO
 #eval ciferace 9999999999999999999999999999999999999999999999999999999999999
 
 
+def maximum_z_krychle (g : Nat → Nat → Nat → Nat) (n : Nat) : Nat := 0 -- TODO
+
+#eval maximum_z_krychle (fun x y z => x + y - z) 10    /- `18` -/
+#eval maximum_z_krychle (fun x y z => x * (6-x) * y * (4-y) * z * (10-z)) 7    /- `900` -/
+
+
 def je_prvocislo (a : Nat) : Bool := false -- TODO
 
 
@@ -132,9 +138,3 @@ vypis_splnujici_do je_dokonale_cislo n
 
 #eval seznam_dokonalych_cisel_do 500
 #eval seznam_dokonalych_cisel_do 10000
-
-
-def maximum_z_krychle (g : Nat → Nat → Nat → Nat) (n : Nat) : Nat := 0 -- TODO
-
-#eval maximum_z_krychle (fun x y z => x + y - z) 10    /- `18` -/
-#eval maximum_z_krychle (fun x y z => x * (6-x) * y * (4-y) * z * (10-z)) 7    /- `900` -/
