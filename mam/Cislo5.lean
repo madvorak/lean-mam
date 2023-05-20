@@ -58,7 +58,7 @@ by
   exact dva_na_vs_na_druhou_aux (n - 5)
 
 
-lemma binetuv_aux {x : ℝ} (predpoklad : x * x = x + 1) (m : ℕ) :
+lemma binetovo {x : ℝ} (predpoklad : x * x = x + 1) (m : ℕ) :
   x ^ (m+1) = x * fibonacci (m+1) + fibonacci m :=
 by
   induction' m with n ih
@@ -83,9 +83,9 @@ by
     have spor : Real.sqrt 5 * Real.sqrt 5 = 0 * Real.sqrt 5
     · exact congrFun (congrArg HMul.hMul pro_spor) (Real.sqrt 5)
     linarith
-  cases' n with m ih
+  cases' n with m
   · simp [fibonacci]
-  rw [binetuv_aux, binetuv_aux]
+  rw [binetovo, binetovo]
   ring
   convert_to (fibonacci (Nat.succ m)) = (1 : ℝ) * (fibonacci (1 + m))
   · exact CommGroupWithZero.mul_inv_cancel (Real.sqrt 5) odm5nn
