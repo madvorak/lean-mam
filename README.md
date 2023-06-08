@@ -1,4 +1,4 @@
-# Zdrojové kódy pro řešitele M&amp;M témátka "Programování&nbsp;a&nbsp;dokazování&nbsp;v&nbsp;Leanu"
+# Programování a dokazování v Leanu
 
 Studijní texty:
 
