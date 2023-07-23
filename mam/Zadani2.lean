@@ -7,18 +7,18 @@ def nasobky_sedmi : Nat → List Nat := fun _ => [] -- TODO
 #eval nasobky_sedmi 6
 
 
-def jekon {T : Type} [DecidableEq T] : List T → Bool
+def je_konst {T : Type} [DecidableEq T] : List T → Bool
 | [ ]                      => true
 | [ _ ]                    => true
-| prvni :: druhy :: zbytek => (prvni = druhy) && jekon zbytek
+| prvni :: druhy :: zbytek => (prvni = druhy) && je_konst zbytek
 
-#eval jekon [5, 5, 5, 5]
-#eval jekon [5, 5, 3, 5]
-#eval jekon [1, 5, 5, 5]
-#eval jekon [5, 5, 5, 4]
-#eval jekon [5, 2, 5, 5]
-#eval jekon ['a', 'A']
-#eval jekon ['a', 'a']
+#eval je_konst [5, 5, 5, 5]
+#eval je_konst [5, 5, 3, 5]
+#eval je_konst [1, 5, 5, 5]
+#eval je_konst [5, 5, 5, 4]
+#eval je_konst [5, 2, 5, 5]
+#eval je_konst ['a', 'A']
+#eval je_konst ['a', 'a']
 
 
 def soucin : List Int → Int := fun _ => 0 -- TODO
