@@ -98,49 +98,15 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     have samozrejmost : x ≤ x
     · rfl
     exact div_le_div levy_citatel_nezap this xpos samozrejmost
-  have : x*x / x + 1 / x ≥ 2*x / x
+  have : x*x/x + 1/x ≥ 2*x/x
   · convert this
     exact div_add_div_same (x*x) 1 x
   convert this
-  · convert_to x = x * x * x⁻¹
-    · simp
-  · have : (2 : ℝ) = 2 * 1 -- zkusit najit snazsi dukaz `2 = 2 * x / x`
-    · ring
-    have : 2 = 2 * (x / x)
-    · convert this
-      have : x ≠ 0
+  · simp
+  · convert_to 2 = 2 * (x / x)
+    · exact IsAssociative.assoc 2 x x⁻¹
+    convert_to (2 : ℝ) = (2 : ℝ) * 1
+    · have : x ≠ 0
       · exact LT.lt.ne' xpos
       exact div_self this
-    convert this
-    exact IsAssociative.assoc 2 x x⁻¹
-
-example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by -- obsolete
-  have : (x - 1) ^ 2 ≥ 0
-  · exact pow_two_nonneg (x - 1)
-  have : x^2 + 1 - 2*x ≥ 0
-  · convert this
     ring
-  have : x^2 + 1 ≥ 2*x
-  · exact le_of_sub_nonneg this
-  have : (x^2 + 1) / x ≥ (2*x) / x
-  · have left_numerator_nneg : x^2 + 1 ≥ 0
-    · nlinarith
-    have wtf : x ≤ x
-    · rfl
-    exact div_le_div left_numerator_nneg this xpos wtf
-  have : x^2 / x + 1 / x ≥ (2*x) / x
-  · convert this
-    exact div_add_div_same (x ^ 2) 1 x
-  convert this
-  · convert_to x = x * x * x⁻¹
-    · ring
-    · simp
-  · have : (2 : ℝ) = 2 * 1
-    · ring
-    have : 2 = 2 * (x / x)
-    · convert this
-      have : x ≠ 0
-      · exact LT.lt.ne' xpos
-      exact div_self this
-    convert this
-    exact IsAssociative.assoc 2 x x⁻¹
