@@ -3,14 +3,14 @@ import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.LibrarySearch
 
 
-theorem dva_krat (n : Nat) : 2 * n = n + n := two_mul n
+theorem dva_krat (n : ℕ) : 2 * n = n + n := two_mul n
 
-theorem tri_krat (n : Nat) : 3 * n = n + n + n := by
+theorem tri_krat (n : ℕ) : 3 * n = n + n + n := by
   convert_to 3 * n = 2 * n + n
   exact symm (dva_krat n)
   exact Nat.succ_mul 2 n
 
-theorem tri_krat' (n : Nat) : 3 * n = n + n + n := by ring
+theorem tri_krat' (n : ℕ) : 3 * n = n + n + n := by ring
 
 theorem soucet_na_druhou (x y : ℤ) : (x + y) ^ 2 = x^2 + 2*x*y + y^2 := by ring
 
@@ -18,15 +18,15 @@ theorem rozdil_na_treti (x y : ℚ) : (x - y) ^ 3 = x^3 - 3*x^2*y + 3*x*y^2 - y^
 
 theorem rozdil_patych_mocnin (x y : ℝ) : x^5 - y^5 = (x - y) * (x^4 + x^3*y + x^2*y^2 + x*y^3 + y^4) := by ring
 
-example (n : Nat) : 2 ^ (n+3) = 8 * 2^n := by ring
+example (n : ℕ) : 2 ^ (n+3) = 8 * 2^n := by ring
 
-example (n : Nat) (n_je_pet : n = 5) : n - 1 = 4 := by
+example (n : ℕ) (n_je_pet : n = 5) : n - 1 = 4 := by
   rw [n_je_pet]
 
-example (n : Nat) (n_je_pet : 5 = n) : n - 1 = 4 := by
+example (n : ℕ) (n_je_pet : 5 = n) : n - 1 = 4 := by
   rw [symm n_je_pet]
 
-example (n : Nat) (n_je_pet : 5 = n) : n - 1 = 4 := by
+example (n : ℕ) (n_je_pet : 5 = n) : n - 1 = 4 := by
   rw [←n_je_pet]
 
 example (a b c : ℝ) (a_je_dva : a = 2) (b_je_tri : b = 3) (c_je_pet : c = 5) : a + b = c := by
@@ -92,11 +92,11 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     ring
   have : x*x + 1 ≥ 2*x
   · exact le_of_sub_nonneg this
-  have : (x*x + 1) / x ≥ 2*x / x
+  have : (x*x + 1) / x ≥ 2*x / x -- TODO zkusit pouzit `div_le_div_right` misto `div_le_div`
   · have levy_citatel_nezap : x*x + 1 ≥ 0
     · nlinarith
     have samozrejmost : x ≤ x
-    · rfl
+    · exact refl x
     exact div_le_div levy_citatel_nezap this xpos samozrejmost
   have : x*x/x + 1/x ≥ 2*x/x
   · convert this
