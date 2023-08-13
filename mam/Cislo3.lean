@@ -92,7 +92,10 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     ring
   have : x*x + 1 ≥ 2*x
   · exact le_of_sub_nonneg this
-  have : (x*x + 1) / x ≥ 2*x / x -- TODO zkusit pouzit `div_le_div_right` misto `div_le_div`
+  have : (x*x + 1) / x ≥ 2*x / x
+  -- pokud přejdeme na novější toolchain, půjde najít `div_le_div_right` misto `div_le_div`
+  -- automaticky pomocí `library_search` což umožní zjednodušit důkaz
+  -- možná bude potřeba zároveň obrátit strany nerovností
   · have levy_citatel_nezap : x*x + 1 ≥ 0
     · nlinarith
     have samozrejmost : x ≤ x
