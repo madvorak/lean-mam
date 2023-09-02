@@ -33,6 +33,10 @@ example (a b c : ℝ) (a_je_dva : a = 2) (b_je_tri : b = 3) (c_je_pet : c = 5) :
   rw [a_je_dva, b_je_tri, c_je_pet]
   ring
 
+example (a : ℝ) (a_je_dva : a = 2) (a_je_tri : a = 3) : False := by
+  rw [a_je_dva] at a_je_tri
+  simp at a_je_tri
+
 example (x : ℝ) (xnn : x ≠ 0) : x^2 / x = x := by
   field_simp
   ring
@@ -108,7 +112,7 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
   · simp
   · convert_to 2 = 2 * (x / x)
     · exact IsAssociative.assoc 2 x x⁻¹
-    convert_to (2 : ℝ) = (2 : ℝ) * 1
+    convert_to (2 : ℝ) = 2 * 1
     · have : x ≠ 0
       · exact LT.lt.ne' xpos
       exact div_self this
