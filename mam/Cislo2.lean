@@ -13,10 +13,6 @@ def seznam123_e : List Nat := 1 :: 2 :: 3 :: []
 #eval seznam123_d
 #eval seznam123_e
 
-def rovnaji_se : Bool :=
-seznam123_a = seznam123_b ∧ seznam123_b = seznam123_c ∧ seznam123_c = seznam123_d ∧ seznam123_d = seznam123_e
-#eval rovnaji_se
-
 
 def seznam12345_a : List Nat := 1 :: 2 :: 3 :: 4 :: 5 :: []
 def seznam12345_b : List Nat := [1, 2, 3, 4, 5]
@@ -30,19 +26,13 @@ def seznam12345_e : List Nat := seznam123_a ++ [4, 5]
 #eval seznam12345_d
 #eval seznam12345_e
 
-def rovnaji_se_zase : Bool := seznam12345_a = seznam12345_b ∧ seznam12345_b = seznam12345_c ∧
-  seznam12345_c = seznam12345_d ∧ seznam12345_d = seznam12345_e
-#eval rovnaji_se_zase
-
-def nerovnaji_se : Bool := seznam123_a = seznam12345_a
-#eval nerovnaji_se
-
 
 def prvnich_n_lichych_sestupne : Nat → List Nat
 | 0   => []
 | n+1 => (2 * n + 1) :: (prvnich_n_lichych_sestupne n)
 
 #eval prvnich_n_lichych_sestupne 6
+
 
 
 def soucet : List Nat → Nat
@@ -81,6 +71,7 @@ def je_konstantni {T : Type} [DecidableEq T] : List T → Bool
 #eval je_konstantni ['a', 'a']
 
 
+
 def obrat {T : Type} : List T → List T
 | [ ]           => []
 | hlava :: telo => obrat telo ++ [hlava]
@@ -114,9 +105,9 @@ def obrat_rychla {T : Type} : List T → List T
 #eval obrat        ([] : List Nat)
 #eval obrat_rychle ([] : List Nat)
 #eval obrat_rychla ([] : List Nat)
-private def nah := [5, 2, 6, 0, 2, 8, 4, 1, 2, 3, 6, 9, 1, 5, 5, 5, 4, 7, 0, 2, 3, 4, 9, 8, 1, 6, 4, 5]
+private def nah := [5, 2, 6, 0, 2, 8, 4, 1, 3, 6, 9, 1, 5, 5, 5, 4, 7, 0, 3, 4, 9, 8, 1, 6, 4, 5]
 #eval obrat nah = obrat_rychle nah
-#eval obrat_rychle nah = obrat_rychla nah
+#eval obrat_rychle (nah ++ nah) = obrat_rychla (nah ++ nah)
 #eval obrat_rychla (obrat nah) = nah
 
 
@@ -149,13 +140,14 @@ seznam = obrat_rychle seznam
 #eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
 
 
+
 def skalarni_soucin : List Float → List Float → Float
 | [ ]    , _       => 0.0
 | _      , [ ]     => 0.0
 | a :: as, b :: bs => a*b + skalarni_soucin as bs
 
 #eval skalarni_soucin [3, 0, 0.5, -2] [2, 8.7, 4, -1]
-private def jedna_az (n : Nat) : List Float := (List.map (fun a => Nat.toFloat (a+1)) (List.range n))
+private def jedna_az (n : Nat) : List Float := (List.range n).map (fun a => Nat.toFloat (a+1))
 #eval skalarni_soucin (jedna_az 5) (jedna_az 5)
 #eval skalarni_soucin (jedna_az 5) (jedna_az 9)
 #eval skalarni_soucin (jedna_az 5) (obrat (jedna_az 5))
@@ -165,82 +157,65 @@ private def jedna_az (n : Nat) : List Float := (List.map (fun a => Nat.toFloat (
 #eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
 
 
-private def fibo_gen (n : Nat) : List Nat → List Nat
+def kte_mocniny_sestupne (k : Nat) : Nat → List Nat
+| 0   => []
+| n+1 => (n^k) :: (kte_mocniny_sestupne k n)
+
+def kte_mocniny (k : Nat) (n : Nat) :=
+obrat_rychle (kte_mocniny_sestupne k n)
+
+#eval kte_mocniny 6 5
+
+
+def rozdily_sousedu : List Nat → List Nat
 | [ ]         => []
 | [ _ ]       => []
-| a :: b :: l => if n = 0
-                 then a :: b :: l
-                 else fibo_gen (n-1) ((a+b) :: a :: b :: l)
+| a :: b :: s => (b-a) :: rozdily_sousedu (b :: s)
 
-def fibo_list (n : Nat) : List Nat :=
-obrat (fibo_gen (n-2) [1, 0])
+#eval rozdily_sousedu [5, 5, 9, 19, 99, 100]
+#eval rozdily_sousedu seznam12345_a
+#eval rozdily_sousedu [42]
+#eval rozdily_sousedu []
 
-#eval fibo_list 12
-
-def seznam_pomeru : List Nat → List Float
-| [ ]         => []
-| [ _ ]       => []
-| a :: b :: l => (Nat.toFloat a / Nat.toFloat b) :: seznam_pomeru (b :: l)
-
-def fibo_pomery (n : Nat) : List Float :=
-seznam_pomeru (fibo_list (n+1))
-
-#eval fibo_pomery 25
+#eval kte_mocniny 2 11
+#eval rozdily_sousedu (kte_mocniny 2 11)
+#eval rozdily_sousedu (rozdily_sousedu (kte_mocniny 2 11))
 
 
-def rozdily : List Nat → List Nat
-| [ ]         => []
-| [ _ ]       => []
-| a :: b :: l => (b-a) :: rozdily (b :: l)
-
-#eval rozdily [5, 5, 9, 19, 99, 100]
-#eval rozdily seznam12345_a
-#eval rozdily [42]
-#eval rozdily []
-#eval List.map (· ^ 2) (List.range 14)
-#eval rozdily (List.map (· ^ 2) (List.range 14))
-#eval rozdily (rozdily (List.map (· ^ 2) (List.range 14)))
-#eval rozdily (rozdily (rozdily (List.map (· ^ 2) (List.range 14))))
-#eval List.map (· ^ 3) (List.range 13)
-#eval rozdily $ List.map (· ^ 3) (List.range 13)
-#eval rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
-#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 3) (List.range 13)
-#eval List.map (· ^ 4) (List.range 12)
-#eval rozdily $ List.map (· ^ 4) (List.range 12)
-#eval rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
-#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 4) (List.range 12)
-#eval List.map (· ^ 5) (List.range 11)
-#eval rozdily $ List.map (· ^ 5) (List.range 11)
-#eval rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
-#eval rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
-#eval rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ rozdily $ List.map (· ^ 5) (List.range 11)
-
-
-def aplikuj_tolikrat {β : Type} (operace : β → β) (vstup : β) : Nat → β
+def aplikuj_tolikrat {T : Type} (oper : T → T) (vstup : T) : Nat → T
 | 0   => vstup
-| n+1 => aplikuj_tolikrat operace (operace vstup) n
+| n+1 => aplikuj_tolikrat oper (oper vstup) n
 
-#eval aplikuj_tolikrat (· + 3) 10 5
+#eval aplikuj_tolikrat (· + 3) 10 6
 #eval aplikuj_tolikrat (1 :: ·) [] 9
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 3
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 6
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 9
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 12
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 15
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 50
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) 42.0 100
-#eval aplikuj_tolikrat (fun x => 1 + 1 / x) (-100000.0) 100
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 2) (List.range 10)) 2
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 3) (List.range 10)) 3
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 4) (List.range 10)) 4
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 5) (List.range 10)) 5
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 6) (List.range 10)) 6
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 7) (List.range 10)) 7
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 8) (List.range 10)) 8
-#eval aplikuj_tolikrat rozdily (List.map (· ^ 9) (List.range 10)) 9
-#eval faktorial 9
+
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 0
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 1
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 2
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 3
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 4
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 5
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 6
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 7
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 8
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 8) 9
+
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 2 11) 2
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 3 11) 3
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 4 11) 4
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 5 11) 5
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 6 11) 6
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 7 11) 7
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 8 11) 8
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 9 11) 9
+#eval aplikuj_tolikrat rozdily_sousedu (kte_mocniny 10 11) 10
+#eval faktorial 10
+
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 3
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 6
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 9
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 12
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 15
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 50
+#eval aplikuj_tolikrat (1 + 1 / ·) 42.0 100
+#eval aplikuj_tolikrat (1 + 1 / ·) (-100000.0) 100
