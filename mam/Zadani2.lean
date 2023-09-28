@@ -1,8 +1,8 @@
-import mam.Cislo1
 import mam.Cislo2
 
 
-def nasobky_sedmi : Nat → List Nat := fun _ => [] -- TODO
+def nasobky_sedmi : Nat → List Nat
+:= fun _ => [] -- TODO smažte celý tento řádek a pište svůj kód zde
 
 #eval nasobky_sedmi 6
 
@@ -21,14 +21,16 @@ def je_konst {T : Type} [DecidableEq T] : List T → Bool
 #eval je_konst ['a', 'a']
 
 
-def soucin : List Int → Int := fun _ => 0 -- TODO
+def soucin : List Int → Int
+:= fun _ => 0 -- TODO smažte celý tento řádek a pište svůj kód zde
 
 #eval soucin [2, 3]
 #eval soucin [-3, 15, -2]
 #eval soucin [953812, -748513, 0, -982331, 198234]
 
 
-def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := id -- TODO
+def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T
+:= id -- TODO smažte celý tento řádek a pište svůj kód zde
 
 #eval vynech_opakovani [1, 3, 3, 7]
 #eval vynech_opakovani ['a', 'b', 'b', 'b', 'b', 'a', 'b', 'c', 'c', 'a']
@@ -48,13 +50,16 @@ def vynech_opakovani {T : Type} [DecidableEq T] : List T → List T := id -- TOD
 #eval String.mk (vynech_opakovani "       a           b            c      ".toList)
 
 
-def prefixove_soucty : List Int → List Int := id -- TODO
+def prefixove_soucty : List Int → List Int :=
+id -- TODO smažte celý tento řádek a pište svůj kód zde
 
 #eval prefixove_soucty [1, 2, 5, 0]
 #eval prefixove_soucty [1, -5, 3, 2, 2, 2, 2]
 #eval prefixove_soucty [0, 0, 10, -1, -2, -3, -4, -5, 0, 10, 0]
 
-def postfixove_soucty : List Int → List Int := id -- TODO
+
+def postfixove_soucty : List Int → List Int :=
+id -- TODO smažte celý tento řádek a pište svůj kód zde
 
 #eval postfixove_soucty [1, 2, 5, 0]
 #eval postfixove_soucty [1, -5, 3, 2, 2, 2, 2]
