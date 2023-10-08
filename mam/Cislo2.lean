@@ -1,6 +1,8 @@
 import mam.Cislo1
 
 
+-- ## Vytvoření seznamu
+
 def seznam123_a : List Nat := [1, 2, 3]
 def seznam123_b : List Nat := 1 :: [2, 3]
 def seznam123_c : List Nat := 1 :: (2 :: [3])
@@ -34,6 +36,7 @@ def prvnich_n_lichych_sestupne : Nat → List Nat
 #eval prvnich_n_lichych_sestupne 6
 
 
+-- ## Zpracování seznamu
 
 def soucet : List Nat → Nat
 | [ ]           => 0
@@ -71,6 +74,21 @@ def je_konstantni {T : Type} [DecidableEq T] : List T → Bool
 #eval je_konstantni ['a', 'a']
 
 
+def skalarni_soucin : List Float → List Float → Float
+| [ ]    , _       => 0.0
+| _      , [ ]     => 0.0
+| a :: as, b :: bs => a*b + skalarni_soucin as bs
+
+#eval skalarni_soucin [3, 0, 0.5, -2] [2, 8.7, 4, -1]
+private def jedna_az (n : Nat) : List Float := (List.range n).map (fun a => Nat.toFloat (a+1))
+#eval skalarni_soucin (jedna_az 5) (jedna_az 5)
+#eval skalarni_soucin (jedna_az 5) (jedna_az 9)
+#eval skalarni_soucin (jedna_az 5) (List.map (1 / ·) (jedna_az 5))
+#eval skalarni_soucin (jedna_az 100) (List.map ((-1) ^ ·) (jedna_az 100))
+#eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
+
+
+-- ## Přetvoření seznamu
 
 def obrat {T : Type} : List T → List T
 | [ ]           => []
@@ -81,6 +99,8 @@ def obrat {T : Type} : List T → List T
 #eval obrat (obrat seznam12345_a)
 #eval seznam123_a ++ obrat seznam123_a
 #eval obrat seznam12345_a ++ seznam12345_a
+#eval skalarni_soucin (jedna_az 5) (obrat (jedna_az 5))
+#eval skalarni_soucin (jedna_az 5) (obrat (List.map (1 / ·) (jedna_az 5)))
 
 def prvnich_n_lichych : Nat → List Nat :=
 obrat ∘ prvnich_n_lichych_sestupne
@@ -140,22 +160,7 @@ seznam = obrat_rychle seznam
 #eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
 
 
-
-def skalarni_soucin : List Float → List Float → Float
-| [ ]    , _       => 0.0
-| _      , [ ]     => 0.0
-| a :: as, b :: bs => a*b + skalarni_soucin as bs
-
-#eval skalarni_soucin [3, 0, 0.5, -2] [2, 8.7, 4, -1]
-private def jedna_az (n : Nat) : List Float := (List.range n).map (fun a => Nat.toFloat (a+1))
-#eval skalarni_soucin (jedna_az 5) (jedna_az 5)
-#eval skalarni_soucin (jedna_az 5) (jedna_az 9)
-#eval skalarni_soucin (jedna_az 5) (obrat (jedna_az 5))
-#eval skalarni_soucin (jedna_az 5) (List.map (1 / ·) (jedna_az 5))
-#eval skalarni_soucin (jedna_az 5) (obrat (List.map (1 / ·) (jedna_az 5)))
-#eval skalarni_soucin (jedna_az 100) (List.map ((-1) ^ ·) (jedna_az 100))
-#eval skalarni_soucin (jedna_az 6666) (List.map ((-1) ^ ·) (jedna_az 6666))
-
+-- ## Hrátky se seznamy
 
 def kte_mocniny_sestupne (k : Nat) : Nat → List Nat
 | 0   => []

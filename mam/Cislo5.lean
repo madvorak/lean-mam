@@ -1,9 +1,5 @@
-import mam.Cislo1
-import mam.Cislo2
-import mam.Cislo3
+import mam.Cislo4
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic.Cases
-import Mathlib.Tactic.LibrarySearch
 
 
 lemma soucet_prvnich_n_lichych_sestupne (n : ℕ) : soucet (prvnich_n_lichych_sestupne n) = n * n :=

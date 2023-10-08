@@ -1,5 +1,5 @@
+import mam.Cislo2 -- nepotrebujeme to ted, ale 4 a 5 budou odkazovat na 1 a 2
 import Mathlib.Data.Real.Basic
-import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.LibrarySearch
 
 

@@ -1,8 +1,4 @@
-import mam.Cislo1
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.LibrarySearch
+import mam.Cislo3
 
 
 theorem aplikace_implikace_1 {P Q : Prop} (p : P) (pq : P → Q) : Q := by
