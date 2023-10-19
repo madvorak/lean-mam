@@ -2,3 +2,4 @@
 /lake-packages/*
 /ucastnici/*
 *eseni*
+!/mam/Reseni1.lean
