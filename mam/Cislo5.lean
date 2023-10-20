@@ -2,8 +2,7 @@ import mam.Cislo4
 import Mathlib.Data.Real.Sqrt
 
 
-lemma soucet_prvnich_n_lichych_sestupne (n : ℕ) : soucet (prvnich_n_lichych_sestupne n) = n * n :=
-by
+lemma soucet_prvnich_n_lichych_sestupne (n : ℕ) : soucet (prvnich_n_lichych_sestupne n) = n * n := by
   induction' n with m ih
   · rfl
   rw [Nat.succ_mul, Nat.mul_succ]
@@ -13,16 +12,14 @@ by
   convert_to m + m + 1 + m * m = m * m + m + (m + 1)
   ring
 
-lemma soucet_dvou_seznamu (x y : List ℕ) : soucet (x ++ y) = soucet x + soucet y :=
-by
+lemma soucet_dvou_seznamu (x y : List ℕ) : soucet (x ++ y) = soucet x + soucet y := by
   induction' x with x₀ xs ih
   · simp
   convert_to x₀ + soucet (xs ++ y) = x₀ + soucet xs + soucet y
   rw [ih]
   ring
 
-lemma obrat_zachovava_soucet (l : List ℕ) : soucet (obrat l) = soucet l :=
-by
+lemma obrat_zachovava_soucet (l : List ℕ) : soucet (obrat l) = soucet l := by
   induction' l with hlava zbytek indukcni
   · rfl
   unfold obrat
@@ -30,15 +27,13 @@ by
   convert_to soucet zbytek + soucet [hlava] = soucet [hlava] + soucet zbytek
   ring
 
-theorem soucet_prvnich_N_lichych (n : ℕ) : soucet (prvnich_n_lichych n) = n * n :=
-by
+theorem soucet_prvnich_N_lichych (n : ℕ) : soucet (prvnich_n_lichych n) = n * n := by
   simp [prvnich_n_lichych]
   rw [obrat_zachovava_soucet]
   apply soucet_prvnich_n_lichych_sestupne
 
 
-lemma dva_na_vs_na_druhou_aux (n : ℕ) : 2 ^ (n+5) > (n+5) ^ 2 :=
-by
+lemma dva_na_vs_na_druhou_aux (n : ℕ) : 2 ^ (n+5) > (n+5) ^ 2 := by
   induction' n with m ih
   · decide
   rw [Nat.succ_add, Nat.pow_succ]
@@ -46,8 +41,7 @@ by
   · nlinarith
   linarith
 
-theorem dva_na_vs_na_druhou (n : ℕ) (aspon_pet : n ≥ 5) : 2^n > n^2 :=
-by
+theorem dva_na_vs_na_druhou (n : ℕ) (aspon_pet : n ≥ 5) : 2^n > n^2 := by
   have minus5_plus5 : n = n - 5 + 5
   · exact Nat.eq_add_of_sub_eq aspon_pet rfl
   rw [minus5_plus5]
@@ -55,8 +49,7 @@ by
 
 
 lemma binetovo {x : ℝ} (predpoklad : x * x = x + 1) (m : ℕ) :
-  x ^ (m+1) = x * fibonacci (m+1) + fibonacci m :=
-by
+    x ^ (m+1) = x * fibonacci (m+1) + fibonacci m := by
   induction' m with n ih
   · simp [fibonacci]
   convert_to x * x ^ (n+1) = x * (fibonacci n + fibonacci (n+1)) + fibonacci (n+1)
@@ -68,8 +61,7 @@ by
   ring
 
 theorem binetuv_vzorec (n : ℕ) :
-  fibonacci n = (1 / Real.sqrt 5) * (((1 + Real.sqrt 5) / 2) ^ n - ((1 - Real.sqrt 5) / 2) ^ n) :=
-by
+    fibonacci n = (1 / Real.sqrt 5) * (((1 + Real.sqrt 5) / 2) ^ n - ((1 - Real.sqrt 5) / 2) ^ n) := by
   have odm5nd : Real.sqrt 5 * Real.sqrt 5 = (5 : ℝ)
   · have pet_nz : 0 ≤ (5 : ℝ)
     · linarith

@@ -131,6 +131,8 @@ private def nah := [5, 2, 6, 0, 2, 8, 4, 1, 3, 6, 9, 1, 5, 5, 5, 4, 7, 0, 3, 4, 
 #eval obrat_rychla (obrat nah) = nah
 
 
+-- ## Hrátky se seznamy
+
 def je_palindrom {T : Type} [DecidableEq T] (seznam : List T) : Bool :=
 seznam = obrat_rychle seznam
 
@@ -159,8 +161,6 @@ seznam = obrat_rychle seznam
 #eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a)
 #eval je_palindrom (obrat seznam12345_a ++ seznam12345_a ++ obrat seznam12345_a ++ seznam12345_a)
 
-
--- ## Hrátky se seznamy
 
 def kte_mocniny_sestupne (k : Nat) : Nat → List Nat
 | 0   => []

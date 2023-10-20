@@ -6,7 +6,7 @@ def povrch_kvadru (a b c : Nat) : Nat := 2 * (a * b + b * c + c * a)
 #eval povrch_kvadru 2 3 4    /- `52` -/
 #eval povrch_kvadru 6 6 6    /- `216` -/
 #eval povrch_kvadru 14 0 7    /- `196` -/
-#eval povrch_kvadru 999 1000 1001   /- `5999998` -/
+#eval povrch_kvadru 999 1000 1001    /- `5999998` -/
 
 
 def obsah_trojuhelniku (a b c : Float) : Float :=
@@ -115,13 +115,13 @@ if a < 10
 then a
 else ciferace (ciferny_soucet a)
 
-#eval ciferace       3
-#eval ciferace       52
-#eval ciferace       919
-#eval ciferace       999
-#eval ciferace       123456
-#eval ciferace       100000000000000000000000000000000000000000000000000000001
-#eval ciferace       9999999999999999999999999999999999999999999999999999999999999
+#eval ciferace 3
+#eval ciferace 52
+#eval ciferace 919
+#eval ciferace 999
+#eval ciferace 123456
+#eval ciferace 100000000000000000000000000000000000000000000000000000001
+#eval ciferace 9999999999999999999999999999999999999999999999999999999999999
 
 
 private def maximum_pres_treti (g : Nat → Nat → Nat → Nat) (k m : Nat) : Nat → Nat
