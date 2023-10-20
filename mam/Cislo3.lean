@@ -6,7 +6,7 @@ import Mathlib.Tactic.LibrarySearch
 theorem dva_krat (n : ℕ) : 2 * n = n + n := two_mul n
 
 theorem tri_krat (n : ℕ) : 3 * n = n + n + n := by
-  convert_to 3 * n = 2 * n + n
+  convert_to 3 * n = 2 * n + n using 2
   exact symm (dva_krat n)
   exact Nat.succ_mul 2 n
 
@@ -50,11 +50,11 @@ example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*
   ring
 
 
-example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := Trans.simple xy yz
+example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := le_trans xy yz
 
-example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := Trans.simple xy yz
+example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := lt_trans xy yz
 
-example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := instTransLtToLTLeToLE.proof_1 xy yz
+example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := xy.trans_le yz
 
 example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := xy.trans_lt yz
 
@@ -100,20 +100,19 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
   -- pokud přejdeme na novější toolchain, půjde najít `div_le_div_right` misto `div_le_div`
   -- automaticky pomocí `library_search` což umožní zjednodušit důkaz
   -- možná bude potřeba zároveň obrátit strany nerovností
+  -- TODO
   · have levy_citatel_nezap : x*x + 1 ≥ 0
     · nlinarith
     have samozrejmost : x ≤ x
     · exact refl x
     exact div_le_div levy_citatel_nezap this xpos samozrejmost
   have : x*x/x + 1/x ≥ 2*x/x
-  · convert this
+  · convert this using 1
     exact div_add_div_same (x*x) 1 x
   convert this
   · simp
   · convert_to 2 = 2 * (x / x)
     · exact IsAssociative.assoc 2 x x⁻¹
     convert_to (2 : ℝ) = 2 * 1
-    · have : x ≠ 0
-      · exact LT.lt.ne' xpos
-      exact div_self this
+    · field_simp
     ring
