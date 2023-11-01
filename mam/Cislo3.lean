@@ -3,6 +3,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.LibrarySearch
 
 
+-- ## Rovnosti
+
 theorem dva_krat (n : ℕ) : 2 * n = n + n := two_mul n
 
 theorem tri_krat (n : ℕ) : 3 * n = n + n + n := by
@@ -50,11 +52,13 @@ example (x y z : ℝ) (xnn : x ≠ 0) : x*y*z + 3*y*z*x - 2*z*x*y = y*x*z + x^2*
   ring
 
 
-example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := Trans.simple xy yz
+-- ## Nerovnosti
 
-example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := Trans.simple xy yz
+example (x y z : ℝ) (xy : x ≤ y) (yz : y ≤ z) : x ≤ z := xy.trans yz
 
-example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := instTransLtToLTLeToLE.proof_1 xy yz
+example (x y z : ℝ) (xy : x < y) (yz : y < z) : x < z := xy.trans yz
+
+example (x y z : ℝ) (xy : x < y) (yz : y ≤ z) : x < z := xy.trans_le yz
 
 example (x y z : ℝ) (xy : x ≤ y) (yz : y < z) : x < z := xy.trans_lt yz
 
@@ -97,9 +101,6 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
   have : x*x + 1 ≥ 2*x
   · exact le_of_sub_nonneg this
   have : (x*x + 1) / x ≥ 2*x / x
-  -- pokud přejdeme na novější toolchain, půjde najít `div_le_div_right` misto `div_le_div`
-  -- automaticky pomocí `library_search` což umožní zjednodušit důkaz
-  -- možná bude potřeba zároveň obrátit strany nerovností
   · have levy_citatel_nezap : x*x + 1 ≥ 0
     · nlinarith
     have samozrejmost : x ≤ x
@@ -111,9 +112,9 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
   convert this
   · simp
   · convert_to 2 = 2 * (x / x)
-    · exact IsAssociative.assoc 2 x x⁻¹
+    · exact mul_assoc 2 x x⁻¹
     convert_to (2 : ℝ) = 2 * 1
     · have : x ≠ 0
-      · exact LT.lt.ne' xpos
+      · exact ne_of_gt xpos
       exact div_self this
     ring

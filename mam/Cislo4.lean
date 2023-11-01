@@ -27,8 +27,8 @@ theorem aplikace_implikaci_2 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R
 theorem aplikace_implikaci_3 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R) : R :=
 qr (pq p)
 
-theorem aplikace_implikaci_4 {P Q R : Prop} (h₁ : P) (h₂ : P → Q) (h₃ : Q → R) : R :=
-h₃ (h₂ h₁)
+theorem aplikace_funkce {P Q R : Type} (a : P) (f : P → Q) (g : Q → R) : R :=
+g (f a)
 
 theorem skladani_implikaci_1 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R := by
   intro p
@@ -48,6 +48,9 @@ fun p => qr (pq p)
 
 theorem skladani_implikaci_5 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R :=
 qr ∘ pq
+
+theorem skladani_funkci {P Q R : Type} (f : P → Q) (g : Q → R) : P → R :=
+g ∘ f
 
 example {P Q R S T : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (pqrst : P → Q → R → S → T) : T := by
   apply pqrst
@@ -206,7 +209,7 @@ theorem krat_dva : ∀ n : ℕ, n * 2 = n + n := by
 
 theorem cislo_55_je_fibonacciho : ∃ n : ℕ, fibonacci n = 55 := by
   use 10
-  rfl
+  decide
 
 
 theorem tesne : ∀ n : ℕ, ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
@@ -265,7 +268,7 @@ theorem Cantorova_veta (T : Type) : ¬ (∃ f : T → Set T, Function.Surjective
   cases' pro_spor with f surjektivni
   cases' surjektivni (fun x => x ∉ f x) with a sporne
   have paradox : (a ∈ f a) ↔ (a ∉ f a)
-  · exact of_eq (congrArg (Membership.mem a) sporne)
+  · exact of_eq (congr_arg (Membership.mem a) sporne)
   exact nemozna_ekvivalence paradox
 
 theorem Cantoruv_dusledek (T : Type) : ¬ (∃ g : Set T → T, Function.Injective g) := by

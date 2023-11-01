@@ -1,11 +1,15 @@
 import Std.Data.Nat.Basic
 
 
+-- ## Deklarace funkce
+
 def obvod_obdelnika (a b : Nat) : Nat := 2 * (a + b)
 
 #eval obvod_obdelnika 3 2
 #eval obvod_obdelnika 10 10
 
+
+-- ## Podmínka
 
 def parita (n : Nat) : String :=
 if n % 2 = 0
@@ -43,6 +47,8 @@ else if x < y
 #eval dvojice_rostouci 5 (-5)
 #eval dvojice_rostouci 8 8
 
+
+-- ## Rekurze
 
 def faktorial : Nat → Nat
 | 0   => 1

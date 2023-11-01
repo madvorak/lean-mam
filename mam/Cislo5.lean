@@ -4,7 +4,7 @@ import Mathlib.Data.Real.Sqrt
 
 lemma soucet_prvnich_n_lichych_sestupne (n : ℕ) : soucet (prvnich_n_lichych_sestupne n) = n * n := by
   induction' n with m ih
-  · rfl
+  · decide
   rw [Nat.succ_mul, Nat.mul_succ]
   unfold prvnich_n_lichych_sestupne
   unfold soucet
@@ -21,7 +21,7 @@ lemma soucet_dvou_seznamu (x y : List ℕ) : soucet (x ++ y) = soucet x + soucet
 
 lemma obrat_zachovava_soucet (l : List ℕ) : soucet (obrat l) = soucet l := by
   induction' l with hlava zbytek indukcni
-  · rfl
+  · decide
   unfold obrat
   rw [soucet_dvou_seznamu, indukcni]
   convert_to soucet zbytek + soucet [hlava] = soucet [hlava] + soucet zbytek
