@@ -11,12 +11,6 @@ decreasing_by
   have : a ≥ 10
   · apply le_of_not_lt
     assumption
-  have : a / 10 ≥ 10 / 10
-  · exact Nat.div_le_div_right this
-  have : a / 10 ≥ 1
-  · convert this
-  have : a / 10 < a / 10 * 10
-  · linarith
   have : a / 10 * 10 ≤ a
   · exact Nat.div_mul_le_self a 10
   linarith
