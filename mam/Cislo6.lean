@@ -1,5 +1,4 @@
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.LibrarySearch
 
 
 def ciferny_soucet (a : Nat) : Nat :=

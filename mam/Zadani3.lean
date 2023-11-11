@@ -11,7 +11,7 @@ example (a b c d : ℤ) (a_je : a = d ^ 4) (b_je : b = 1 / c) (c_je : c = a - b)
     (a + b) ^ 2 - c ^ 2 = b * d := by
   sorry
 
-example (x : ℝ) : x^2 - 6*x + 10 ≥ 0 := by
+example (x : ℝ) : 50*x^2 - 126*x + 96 ≥ 0 := by
   sorry
 
 example (x y : ℝ) : 2 * x^3 * y^3 ≤ x^4 * y^2 + x^2 * y^4 := by
