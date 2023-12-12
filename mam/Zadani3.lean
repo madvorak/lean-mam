@@ -1,5 +1,6 @@
 import mam.Cislo3
 
+
 theorem na_druhou (a : ℚ) : a ^ 2 = a * a := by
   sorry
 

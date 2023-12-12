@@ -1,6 +1,7 @@
 import mam.Cislo2 -- nepotrebujeme to ted, ale 4 a 5 budou odkazovat na 1 a 2
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.LibrarySearch
+-- Po prvnim otevreni tohoto souboru se bude kompilovat Mathlib. Mozna budete cekat nekolik desitek minut.
 
 
 -- ## Rovnosti
@@ -37,7 +38,7 @@ example (a b c : ℝ) (a_je_dva : a = 2) (b_je_tri : b = 3) (c_je_pet : c = 5) :
 
 example (a : ℝ) (a_je_dva : a = 2) (a_je_tri : a = 3) : False := by
   rw [a_je_dva] at a_je_tri
-  simp at a_je_tri
+  norm_num at a_je_tri
 
 example (x : ℝ) (xnn : x ≠ 0) : x^2 / x = x := by
   field_simp
@@ -79,20 +80,26 @@ example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0 := by
   nlinarith
 
 example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
+  convert_to ((2*x - 3) ^ 2) ^ 2 + 19 ≥ 0
+  -- jsme ve slepe ulicce, protoze `100 = 19` dokazat nelze
+  sorry
+  sorry
+  sorry
+  sorry
+
+example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
+  convert_to ((2*x - 3) ^ 2) ^ 2 + 19 ≥ 0 using 1
+  ring
+  nlinarith
+
+example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
   have pomocne : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
   · convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
     · ring
     nlinarith
   linarith
 
-example (x : ℝ) : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 100 ≥ 0 := by
-  have pomocne : 16*x^4 - 96*x^3 + 216*x^2 - 216*x + 81 ≥ 0
-  convert_to ((2*x - 3) ^ 2) ^ 2 ≥ 0
-  ring
-  nlinarith
-  linarith
-
-example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
+example (x : ℝ) (hx : x > 0) : x + 1/x ≥ 2 := by
   have : (x - 1) ^ 2 ≥ 0
   · exact pow_two_nonneg (x - 1)
   have : x*x + 1 - 2*x ≥ 0
@@ -105,7 +112,7 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     · nlinarith
     have samozrejmost : x ≤ x
     · exact refl x
-    exact div_le_div levy_citatel_nezap this xpos samozrejmost
+    exact div_le_div levy_citatel_nezap this hx samozrejmost
   have : x*x/x + 1/x ≥ 2*x/x
   · convert this
     exact div_add_div_same (x*x) 1 x
@@ -115,6 +122,6 @@ example (x : ℝ) (xpos : x > 0) : x + 1/x ≥ 2 := by
     · exact mul_assoc 2 x x⁻¹
     convert_to (2 : ℝ) = 2 * 1
     · have : x ≠ 0
-      · exact ne_of_gt xpos
+      · exact ne_of_gt hx
       exact div_self this
     ring

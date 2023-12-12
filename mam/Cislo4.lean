@@ -126,6 +126,7 @@ stu (rs r) (rt r)
 example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S) (rt : R → T) (stu : S → T → U) : U := by
   tauto
 
+
 theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
   cases' predpoklad with p q
   constructor
@@ -179,13 +180,16 @@ theorem konjunkce_komutativni_e3 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   · apply konjunkce_komutativni_i7
 
 theorem konjunkce_komutativni_e4 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
+  constructor <;> apply konjunkce_komutativni_i7
+
+theorem konjunkce_komutativni_e5 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   tauto
 
 theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
   rw [konjunkce_komutativni_e3]
 
 
-theorem blbina : 1 + 1 ≠ 3 := by ring
+theorem blbina : 1 + 1 ≠ 3 := by norm_num
 
 example : ¬ (1 + 1 = 3) := blbina
 
