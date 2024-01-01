@@ -71,22 +71,23 @@ theorem binetuv_vzorec (n : ℕ) :
     have spor : Real.sqrt 5 * Real.sqrt 5 = 0 * Real.sqrt 5
     · exact congrFun (congrArg HMul.hMul pro_spor) (Real.sqrt 5)
     linarith
-  cases' n with m
-  · simp [fibonacci]
-  rw [binetovo, binetovo]
-  ring
-  convert_to (fibonacci (Nat.succ m)) = (1 : ℝ) * (fibonacci (1 + m))
-  · exact CommGroupWithZero.mul_inv_cancel (Real.sqrt 5) odm5nn
-  convert_to (fibonacci (Nat.succ m) : ℝ) = (fibonacci (m + 1) : ℝ)
-  · ring
-  rfl
-  · have uprava : ((1 - Real.sqrt 5) / 2) * ((1 - Real.sqrt 5) / 2) =
-                  (1 - 2 * Real.sqrt 5 + Real.sqrt 5 * Real.sqrt 5) / 2 / 2
-    · ring
-    rw [uprava, odm5nd]
+  cases n with
+  | zero => simp [fibonacci]
+  | succ m =>
+    rw [binetovo, binetovo]
     ring
-  · have uprava : ((1 + Real.sqrt 5) / 2) * ((1 + Real.sqrt 5) / 2) =
-                  (1 + 2 * Real.sqrt 5 + Real.sqrt 5 * Real.sqrt 5) / 2 / 2
+    convert_to (fibonacci (Nat.succ m)) = (1 : ℝ) * (fibonacci (1 + m))
+    · exact CommGroupWithZero.mul_inv_cancel (Real.sqrt 5) odm5nn
+    convert_to (fibonacci (Nat.succ m) : ℝ) = (fibonacci (m + 1) : ℝ)
     · ring
-    rw [uprava, odm5nd]
-    ring
+    rfl
+    · have uprava : ((1 - Real.sqrt 5) / 2) * ((1 - Real.sqrt 5) / 2) =
+                    (1 - 2 * Real.sqrt 5 + Real.sqrt 5 * Real.sqrt 5) / 2 / 2
+      · ring
+      rw [uprava, odm5nd]
+      ring
+    · have uprava : ((1 + Real.sqrt 5) / 2) * ((1 + Real.sqrt 5) / 2) =
+                    (1 + 2 * Real.sqrt 5 + Real.sqrt 5 * Real.sqrt 5) / 2 / 2
+      · ring
+      rw [uprava, odm5nd]
+      ring

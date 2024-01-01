@@ -1,6 +1,8 @@
 import mam.Cislo3
 
 
+-- ## Implikace
+
 theorem aplikace_implikace_1 {P Q : Prop} (p : P) (pq : P → Q) : Q := by
   apply pq
   apply p
@@ -27,7 +29,7 @@ theorem aplikace_implikaci_2 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R
 theorem aplikace_implikaci_3 {P Q R : Prop} (p : P) (pq : P → Q) (qr : Q → R) : R :=
 qr (pq p)
 
-theorem aplikace_funkce {P Q R : Type} (a : P) (f : P → Q) (g : Q → R) : R :=
+theorem aplikace_funkci {P Q R : Type} (a : P) (f : P → Q) (g : Q → R) : R :=
 g (f a)
 
 theorem skladani_implikaci_1 {P Q R : Prop} (pq : P → Q) (qr : Q → R) : P → R := by
@@ -127,21 +129,23 @@ example {P Q R S T U : Prop} (p : P) (pq : P → Q) (qr : Q → R) (rs : R → S
   tauto
 
 
+-- ## Konjunkce
+
 theorem konjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∧ Q) : Q ∧ P := by
-  cases' predpoklad with p q
+  obtain ⟨p,q⟩ := predpoklad
   constructor
   · exact q
   · exact p
 
 theorem konjunkce_komutativni_i2 {P Q : Prop} : P ∧ Q → Q ∧ P := by
   intro predpoklad
-  rcases predpoklad with ⟨p,q⟩
+  obtain ⟨p,q⟩ := predpoklad
   constructor
   · exact q
   · exact p
 
 theorem konjunkce_komutativni_i3 {P Q : Prop} : P ∧ Q → Q ∧ P := by
-  rintro ⟨p,q⟩
+  intro ⟨p,q⟩
   constructor
   · exact q
   · exact p
@@ -157,8 +161,7 @@ theorem konjunkce_komutativni_i5 {P Q : Prop} : P ∧ Q → Q ∧ P := by
 theorem konjunkce_komutativni_i6 {P Q : Prop} : P ∧ Q → Q ∧ P := by
   exact And.symm
 
-theorem konjunkce_komutativni_i7 {P Q : Prop} : P ∧ Q → Q ∧ P :=
-And.symm
+theorem konjunkce_komutativni_i7 {P Q : Prop} : P ∧ Q → Q ∧ P := And.symm
 
 theorem konjunkce_komutativni_e1 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   constructor
@@ -185,9 +188,38 @@ theorem konjunkce_komutativni_e4 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
 theorem konjunkce_komutativni_e5 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := by
   tauto
 
+theorem konjunkce_komutativni_e6 {P Q : Prop} : P ∧ Q ↔ Q ∧ P := And.comm
+
 theorem konjunkce_komutativni_r {P Q : Prop} : (P ∧ Q) = (Q ∧ P) := by
   rw [konjunkce_komutativni_e3]
 
+
+-- ## Disjunkce
+
+theorem disjunkce_komutativni_i1 {P Q : Prop} (predpoklad : P ∨ Q) : Q ∨ P := by
+  cases predpoklad with
+  | inl p =>
+    right
+    exact p
+  | inr q =>
+    left
+    exact q
+
+theorem disjunkce_komutativni_i2 {P Q : Prop} (predpoklad : P ∨ Q) : Q ∨ P := by
+  exact Or.symm predpoklad
+
+theorem disjunkce_komutativni_i3 {P Q : Prop} : P ∨ Q → Q ∨ P := Or.symm
+
+theorem disjunkce_komutativni_e1 {P Q : Prop} : P ∨ Q ↔ Q ∨ P := by
+  constructor <;> apply disjunkce_komutativni_i3
+
+theorem disjunkce_komutativni_e2 {P Q : Prop} : P ∨ Q ↔ Q ∨ P := by
+  tauto
+
+theorem disjunkce_komutativni_e3 {P Q : Prop} : P ∨ Q ↔ Q ∨ P := Or.comm
+
+
+-- ## Negace
 
 theorem blbina : 1 + 1 ≠ 3 := by norm_num
 
@@ -197,17 +229,26 @@ example : (1 + 1 = 3) → False := blbina
 
 theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
   intro hyp
-  by_cases p : P
-  · have negace : ¬ P
+  if p : P
+  then
+    have negace : ¬ P
     · rw [hyp] at p
       exact p
     exact negace p
-  apply p
-  rw [hyp]
-  exact p
+  else
+    apply p
+    rw [hyp]
+    exact p
+
+theorem nemozna_ekvivalence' {P : Prop} : (P ↔ ¬ P) → False := by
+  tauto
+
+theorem nemozna_ekvivalence'' {P : Prop} : (P ↔ ¬ P) → False := iff_not_self
 
 
-theorem krat_dva : ∀ n : ℕ, n * 2 = n + n := by
+-- ## Kvantifikátory
+
+theorem krat_tri : ∀ n : ℕ, n * 3 = n + n + n := by
   intro x
   ring
 
@@ -215,8 +256,7 @@ theorem cislo_55_je_fibonacciho : ∃ n : ℕ, fibonacci n = 55 := by
   use 10
   decide
 
-
-theorem tesne : ∀ n : ℕ, ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
+theorem prir_tesne : ∀ n : ℕ, ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   intro n
   use n + 1
   intro k
@@ -228,16 +268,14 @@ theorem tesne : ∀ n : ℕ, ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (
     rw [Nat.succ_le]
     exact n_lt_k
 
-theorem tesne' (n : ℕ) : ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
+theorem prir_tesne' (n : ℕ) : ∃ m : ℕ, ∀ k : ℕ, (k ≤ n → k < m) ∧ (n < k → m ≤ k) := by
   use n + 1
   intro k
   constructor
   · apply Nat.lt_succ_of_le
   · apply Nat.succ_le.mpr
 
-
-theorem racionalni_cisla_jsou_husta (x z : ℚ) : x < z → ∃ y : ℚ, x < y ∧ y < z := by
-  intro mensi
+theorem realna_cisla_jsou_husta (x z : ℝ) (mensi : x < z) : ∃ y : ℝ, x < y ∧ y < z := by
   use (x + z) / 2
   constructor
   · convert_to x / 2 + x / 2 < x / 2 + z / 2
@@ -251,7 +289,7 @@ theorem racionalni_cisla_jsou_husta (x z : ℚ) : x < z → ∃ y : ℚ, x < y �
     · apply add_lt_add_right
       exact div_lt_div_of_lt two_pos mensi
 
-theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y ∧ y < z := by
+theorem racionalni_cisla_jsou_husta : ∀ x z : ℚ, x < z → ∃ y : ℚ, x < y ∧ y < z := by
   intro x z mensi
   use (x + z) / 2
   constructor
@@ -266,18 +304,46 @@ theorem realna_cisla_jsou_husta : ∀ x z : ℝ, x < z → ∃ y : ℝ, x < y �
     · apply add_lt_add_right
       exact div_lt_div_of_lt two_pos mensi
 
+theorem cela_cisla_nejsou_husta : ¬ (∀ x z : ℤ, x < z → ∃ y : ℤ, x < y ∧ y < z) := by
+  push_neg
+  use 3, 4
+  constructor
+  · decide
+  intro y hy
+  exact hy
 
-theorem Cantorova_veta (T : Type) : ¬ (∃ f : T → Set T, Function.Surjective f) := by
+theorem deMorgan_existencni {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) := by
+  obtain ⟨a, splnen⟩ := R_lze_splnit
   intro pro_spor
-  cases' pro_spor with f surjektivni
-  cases' surjektivni (fun x => x ∉ f x) with a sporne
+  apply pro_spor
+  exact splnen
+
+theorem deMorgan_existencni' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) := by
+  tauto
+
+theorem deMorgan_existencni'' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) :=
+Exists.classicalRecOn R_lze_splnit
+
+
+-- ## Vlastnosti funkcí
+
+def Prosta {A B : Type} (f : A → B) : Prop := ∀ x y : A, x ≠ y → f x ≠ f y
+
+def Surjektivni {A B : Type} (f : A → B) : Prop := ∀ z : B, ∃ x : A, f x = z
+
+def Bijektivni {A B : Type} (f : A → B) : Prop := Prosta f ∧ Surjektivni f
+
+theorem slozProsta {A B C : Type} {f : A → B} {g : B → C} (hf : Prosta f) (hg : Prosta g) :
+    Prosta (g ∘ f) := by
+  intro x y hxy
+  apply hg
+  apply hf
+  exact hxy
+
+theorem vetaCantor (T : Type) : ¬ (∃ f : T → Set T, Surjektivni f) := by
+  intro pro_spor
+  obtain ⟨f, surjektivni⟩ := pro_spor
+  obtain ⟨a, sporne⟩ := surjektivni { x : T | x ∉ f x }
   have paradox : (a ∈ f a) ↔ (a ∉ f a)
   · exact of_eq (congr_arg (Membership.mem a) sporne)
   exact nemozna_ekvivalence paradox
-
-theorem Cantoruv_dusledek (T : Type) : ¬ (∃ g : Set T → T, Function.Injective g) := by
-  intro pro_spor
-  cases' pro_spor with f prosta
-  apply Cantorova_veta
-  use Function.invFun f
-  exact Function.invFun_surjective prosta
