@@ -44,7 +44,7 @@ Pokud chceme charakterizovat prvek `b : B`, prohodíme funkce `f` a `g`:
 -/
 inductive Generace : {A B : Type} → (A → B) → (B → A) → A → ℕ → Prop
 -- Pokud neexistuje `b : B` takové že `g b = a` pak říkáme, že `a` má 0 předchůdců vzhledem k funkcím `f` a `g`.
-| nula {A B : Type} (f : A → B) {g : B → A} {a : A} (sirot : ¬ ∃ b : B, g b = a) :
+| nula {A B : Type} {f : A → B} {g : B → A} {a : A} (sirot : ¬ ∃ b : B, g b = a) :
     Generace f g a 0
 -- Pokud existuje `p : B` takové že `g p = a` pak říkáme, že `p` je rodič `a` vzhledem k funkcím `f` a `g`.
 | nasl {A B : Type} {f : A → B} {g : B → A} {a : A} (p : B) (rodic : g p = a) {n : ℕ} (rodicova : Generace g f p n) :
@@ -71,12 +71,12 @@ lemma jedinaGenerace {A B : Type} {f : A → B} {g : B → A} {a : A} (hf : Pros
   | nula => simp_all
 | N+1, M+1, fgaN, fgaM => by
   cases fgaN with
-  | nasl p parent pgen => cases fgaM with
-  | nasl q qarent qgen => rw [jedinaGenerace hg hf N M pgen (by
+  | nasl p hpa pgen => cases fgaM with
+  | nasl q hqa qgen => rw [jedinaGenerace hg hf N M pgen (by
       convert qgen
       by_contra contr
       apply hg p q contr
-      rw [parent, qarent]
+      rw [hpa, hqa]
     )]
 
 variable {A B : Type} -- Implicitní typové proměnné (pro vše, co následuje) neposouvat výše!
@@ -99,14 +99,6 @@ Každý prvek s lichým počtem předchůdců má nějakého rodiče (a ten má 
 lemma LichaGenerace.existuje_rodic {f : A → B} {g : B → A} {a : A}
     (lichaGen : LichaGenerace f g a) :
     ∃ p : B, g p = a ∧ SudaGenerace g f p := by
-  sorry
-
-/-
-Pokud prvek má sudý počet předchůdců, nemá lichý počet předchůdců.
--/
-lemma SudaGenerace.neniLichaGenerace {f : A → B} {g : B → A} {a : A}
-    (sudaGen : SudaGenerace f g a) (hf : Prosta f) (hg : Prosta g) :
-    ¬ LichaGenerace f g a := by
   sorry
 
 /-
@@ -170,5 +162,5 @@ Pokud existuje prostá funkce `f : A → B` i prostá funkce `g : B → A`, pak 
 theorem jsouStejneVelke : (∃ f : A → B, Prosta f) ∧ (∃ g : B → A, Prosta g) → StejneVelke A B := by
   intro ⟨⟨f, hf⟩, ⟨g, hg⟩⟩
   classical
-  let F : A → B := fun a => if haₒ : LichaGenerace f g a then inverze haₒ else f a
+  let F : A → B := fun a => if ha : LichaGenerace f g a then inverze ha else f a
   sorry

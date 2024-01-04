@@ -223,9 +223,9 @@ theorem disjunkce_komutativni_e3 {P Q : Prop} : P ∨ Q ↔ Q ∨ P := Or.comm
 
 theorem blbina : 1 + 1 ≠ 3 := by norm_num
 
-example : ¬ (1 + 1 = 3) := blbina
+theorem blbina' : ¬ (1 + 1 = 3) := blbina
 
-example : (1 + 1 = 3) → False := blbina
+theorem blbina'' : (1 + 1 = 3) → False := blbina
 
 theorem nemozna_ekvivalence {P : Prop} : (P ↔ ¬ P) → False := by
   intro hyp
@@ -319,10 +319,28 @@ theorem deMorgan_existencni {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a 
   exact splnen
 
 theorem deMorgan_existencni' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) := by
+  obtain ⟨a, splnen⟩ := R_lze_splnit
+  push_neg
+  use a
+  exact splnen
+
+theorem deMorgan_existencni'' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) := by
   tauto
 
-theorem deMorgan_existencni'' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) :=
+theorem deMorgan_existencni''' {α : Type} {R : α → Prop} (R_lze_splnit : ∃ a : α, R a) : ¬ (∀ a : α, ¬ R a) :=
 Exists.classicalRecOn R_lze_splnit
+
+
+-- ## Množiny
+
+example : { x : ℤ | x ≥ 100 } ⊆ { y : ℤ | y > 0 } := by
+  intro a prvek
+  rw [Set.mem_setOf_eq] at *
+  linarith
+
+example (M : Set ℝ) : ∀ a ∈ M, a ≤ |a| := by
+  intro a _
+  exact le_abs_self a
 
 
 -- ## Vlastnosti funkcí
