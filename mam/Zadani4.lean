@@ -47,16 +47,17 @@ inductive Generace : {A B : Type} → (A → B) → (B → A) → A → ℕ → 
 | nula {A B : Type} {f : A → B} {g : B → A} {a : A} (sirot : ¬ ∃ b : B, g b = a) :
     Generace f g a 0
 -- Pokud existuje `p : B` takové že `g p = a` pak říkáme, že `p` je rodič `a` vzhledem k funkcím `f` a `g`.
-| nasl {A B : Type} {f : A → B} {g : B → A} {a : A} (p : B) (rodic : g p = a) {n : ℕ} (rodicova : Generace g f p n) :
+| nasl {A B : Type} {f : A → B} {g : B → A} {a : A} (p : B) (rodic : g p = a) {n : ℕ} (rodokmen : Generace g f p n) :
 -- Pokud rodič `p` má `n` předchůdců, pak `a` má `n+1` předchůdců vzhledem k funkcím `f` a `g`.
     Generace f g a n.succ
 
 /-
+Tohle lemma se vám nejspíš nebude hodit, ale můžete ho použít:
+
 Počet předchůdců je unikátní.
 Sice se může stát, že pro dané `a : A` nebude platit `Generace f g a n` pro žádné `n`
 (to když `a : A` má nekonečně mnoho předchůdců nebo je "v cyklu"),
 ale nemůže se stát, že by například platilo `Generace f g a 3` i `Generace f g a 5` zároveň.
-Zde vstupují předpoklady, že `f` a `g` jsou prosté funkce.
 -/
 lemma jedinaGenerace {A B : Type} {f : A → B} {g : B → A} {a : A} (hf : Prosta f) (hg : Prosta g) :
     (m n : ℕ) → (Generace f g a m) → (Generace f g a n) → (m = n)
