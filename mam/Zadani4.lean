@@ -4,6 +4,8 @@ import mam.Cislo4
 -- Napište důkaz pouze pomocí taktik `exact`, `constructor`, `left`, `right`, `intro`, `use`, `cases`, `obtain`.
 example (P Q R : Prop) : P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   tauto -- Taktika `tauto` je ve vašem řešení této úlohy zakázána.
+-- Taktéž je v tomto cvičení zakázáno používat lemmata z knihoven.
+-- Taktika `exact` je povolena pouze jako `exact a` kde `a` je cokoliv z lokálního kontextu.
 
 -- Napište důkaz pouze pomocí taktik `exact`, `constructor`, `left`, `right`, `intro`, `use`, `cases`, `obtain`.
 example (R : ℕ → ℕ → ℕ → ℕ → ℕ → Prop) :
