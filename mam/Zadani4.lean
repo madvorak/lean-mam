@@ -2,7 +2,7 @@ import mam.Cislo4
 
 
 -- Napište důkaz pouze pomocí taktik `exact`, `constructor`, `left`, `right`, `intro`, `use`, `cases`, `obtain`.
-example (P Q R : Prop) : P ∧ (Q ∨ R) ↔ P ∧ Q ∨ P ∧ R := by
+example (P Q R : Prop) : P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   tauto -- Taktika `tauto` je ve vašem řešení této úlohy zakázána.
 
 -- Napište důkaz pouze pomocí taktik `exact`, `constructor`, `left`, `right`, `intro`, `use`, `cases`, `obtain`.
@@ -103,7 +103,7 @@ lemma LichaGenerace.existuje_rodic {f : A → B} {g : B → A} {a : A}
   sorry
 
 /-
-Pokud prvek má lichý počet předchůdců, jeho dítě má sudý počet předchůdců.
+Pokud prvek má lichý počet předchůdců, jeho potomek má sudý počet předchůdců.
 -/
 lemma LichaGenerace.pristiSudaGenerace {f : A → B} {g : B → A} {a : A}
     (lichaGen : LichaGenerace f g a) :
@@ -111,7 +111,7 @@ lemma LichaGenerace.pristiSudaGenerace {f : A → B} {g : B → A} {a : A}
   sorry
 
 /-
-Pokud prvek má sudý počet předchůdců, jeho dítě má lichý počet předchůdců.
+Pokud prvek má sudý počet předchůdců, jeho potomek má lichý počet předchůdců.
 -/
 lemma SudaGenerace.pristiLichaGenerace {f : A → B} {g : B → A} {a : A}
     (sudaGen : SudaGenerace f g a) :
