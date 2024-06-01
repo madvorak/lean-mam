@@ -109,7 +109,7 @@ obrat ∘ prvnich_n_lichych_sestupne
 #eval soucet (prvnich_n_lichych 8)
 
 
-private def obrat_rychl {T : Type} (pripoj : List T) : List T → List T
+def obrat_rychl {T : Type} (pripoj : List T) : List T → List T
 | [ ]           => pripoj
 | hlava :: telo => obrat_rychl (hlava :: pripoj) telo
 
