@@ -11,3 +11,5 @@
 [M&amp;M 30/4](https://mam.mff.cuni.cz/media/cislo/pdf/30/30-4.pdf) strana 10 až 29
 
 [M&amp;M 30/5](https://mam.mff.cuni.cz/media/cislo/pdf/30/30-5.pdf) strana 6 až 21
+
+[M&amp;M 30/5](https://mam.mff.cuni.cz/media/cislo/pdf/30/30-6.pdf) strana 7 až 20

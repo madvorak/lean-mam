@@ -29,13 +29,17 @@ termination_by
 #eval ackermann' 3 5
 
 
-lemma obrat_rychl_vs_obrat {T : Type} (x y : List T) : obrat_rychl x y = obrat y ++ x := by
+lemma obrat_rychl_vs_obrat {T : Type} (x y : List T) :
+    obrat_rychl x y = obrat y ++ x := by
   induction y generalizing x with
-  | nil => simp [obrat_rychl, obrat]
+  | nil => rfl
   | cons d l ih => simp [obrat_rychl, obrat, ih]
 
-theorem obrat_rychle_vs_obrat {T : Type} : @obrat_rychle T = @obrat T := by
+theorem obrat_rychle_eq_obrat {T : Type} :
+    @obrat_rychle T = @obrat T := by
   simp [obrat_rychle, obrat_rychl_vs_obrat]
 
-theorem obrat_rychle_obrat_rychle {T : Type} (l : List T) : obrat_rychle (obrat_rychle l) = l := by
-  rw [obrat_rychle_vs_obrat, obrat_obrat]
+
+theorem obrat_rychle_obrat_rychle {T : Type} (l : List T) :
+    obrat_rychle (obrat_rychle l) = l := by
+  rw [obrat_rychle_eq_obrat, obrat_obrat]
